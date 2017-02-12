@@ -27,12 +27,12 @@ var Router = {
     login: getRouter("login"),
     message: getRouter("message"),
     mail: getRouter("mail"),
-    index: getRouter("front")
+    front: getRouter("front")
 };
 //設定router
-// app.get('/', function (req, res) {
-//     res.redirect('/login');//後端控制前端跳轉路由
-// });
+app.get('/', function (req, res) {
+     res.redirect('/front');//後端控制前端跳轉路由
+});
 app.use('/mail', Router.mail);
 app.use('/login', Router.login);
-app.use('/', Router.index);
+app.use('/front', Router.front);

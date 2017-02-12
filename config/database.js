@@ -5,7 +5,7 @@ module.exports = {
 	port: 3306,
 	user: 'emagu',
 	password: '',
-	database: 'lively',
+	database: 'Hopper',
 	multipleStatements: true
 	//reconnectTimeout: 2000
 };

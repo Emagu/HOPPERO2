@@ -1,4 +1,18 @@
 # 賣水的網站
+* 系統
+	- DataBase: Mysql5.5
+	- ApplicationSystem: Nodejs v4.6.1
+	- Module:
+		* "body-parser": "^1.15.2",
+    	* "cookie": "^0.3.1",
+    	* "cookie-parser": "^1.4.3",
+    	* "ejs": "2.5.5",
+    	* "express": "^4.14.0",
+    	* "express-session": "^1.14.2",
+    	* "mysql": "^2.12.0",
+    	* "promise": "^7.1.1",
+    	* "socket.io": "^1.7.2",
+    	* "moment-timezone": "*"
 * 已完成
 	- 2017/2/13
 		1.	登入註冊畫面顯示

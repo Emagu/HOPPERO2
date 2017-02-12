@@ -2,9 +2,12 @@
 	<head>
 		<title><%= Title%></title>
 	</head>
-	<script src="public/js/jquery.js"></script>
-	<link rel="stylesheet" href="public/css/w3.css">
-	<link rel="stylesheet" href="public/css/desktop.css">
+	<script src="../public/js/jquery.js"></script>
+	<script src="../public/js/jquery.validate.js"></script>
+	<script src="../public/js/toastr.min.js"></script>
+	<link rel="stylesheet" href="../public/css/w3.css">
+	<link rel="stylesheet" href="../public/css/desktop.css">
+	<link rel="stylesheet" href="../public/css/toastr.min.css">
 	<% CSSs.forEach(function(CSS){ %>
 		<link rel="stylesheet" href = <%= CSS.url%>>
 	<%});%>
@@ -12,27 +15,27 @@
 		<script src=<%= JavaScript.url%>></script>
 	<%});%>
 	<body>
-		
 		<div class="member_box_login">
 			<div class="member_box_top"></div>
+			<form id = "form_login">
 				<div class="member_box_text1">
                 	會員帳號：
-                	<input  class="member_box_input" name="m_account" value="" type="text">
+                	<input  class="member_box_input" name="m_account" id="m_account" value="" type="text">
                 </div>
-
-                <div class="member_box_text2">
-                	密碼：
-                	<input  class="member_box_input" name="m_password" type="password">
+				<div class="member_box_text2">
+					密碼：
+                	<input  class="member_box_input" name="m_password" id="m_password" type="password">
                 </div>
-            <div class="clear"></div>   
-	        <div class="small_button">
-	            <a href=""><button type="button" class="button_blue" style="margin-right:10px">忘記密碼?</button></a>
-	            <a href=""><button type="button" class="button_blue" style="margin-left:10px">註冊</button></a>
-	        </div>
-	        <div class="all_button">
-	            <button type="submit" class="button_red">確認送出</button>
-	        </div>
-			<div class="member_box_bottom"></div>
+            	<div class="clear"></div>   
+	       		<div class="small_button">
+		            <a onclick="alert('忘記')"><button type="button" class="button_blue" style="margin-right:10px">忘記密碼?</button></a>
+            		<a onclick="alert('註冊')"><button type="button" class="button_blue" style="margin-left:10px">註冊</button></a>
+	        	</div>
+	        	<div class="all_button">
+					<button type="sumit" class="button_red" id="LoginButton">確認送出</button>
+				</div>
+				<div class="member_box_bottom"></div>
+			</form>
 		</div>
 
 		<div class="member_box_register">
@@ -76,29 +79,35 @@
 	        </div>
 			<div class="member_box_bottom"></div>
 		</div>
-		<div class="member_box_bg"></div>
+		<div class="member_box_bg" onclick="hideFloatBox()"></div>
 		<div id="wrap_top">
 			<div id="logopic">
-				<a href="/"><img src="public/images/logo.png" ></a>
+				<a href="/front"><img src="../public/images/logo.png" ></a>
 			</div>
 			<ul>
-				<li><a href="/info">公司簡介</a></li>
+				<li><a href="/front/info">公司簡介</a></li>
 				<li>最新消息</li>
-				<li><a href="/productList">產品列表</a></li>
-				<li><a href="/patent">產品專利</a></li>
-				<li><a href="/process">購物流程</a></li>
-				<li><a href="/contact">聯繫方式</a></li>
+				<li><a href="/front/productList">產品列表</a></li>
+				<li><a href="/front/patent">產品專利</a></li>
+				<li><a href="/front/process">購物流程</a></li>
+				<li><a href="/front/contact">聯繫方式</a></li>
 			</ul>
 			<div id="member">
-				<span id="login"><a>登入</a></span>
-				<span id="register"><a>註冊</a></span>
+				<% if(!Login){%>
+					<span id="login" onclick="showLoginBox()"><a>登入</a></span>
+					<span id="register" onclick="showRegisterBox()"><a>註冊</a></span>
+				<% }else{ %>
+					
+					<span id="logout"><a>登出</a></span>
+				<% } %>
+				
 			</div>
 			<div class="clear"></div>
 		</div>
 		<div id="wrap_top_hide"></div>
 		<div id="side">
             <a href="">
-                <img src="public/images/shop.png">
+                <img src="../public/images/shop.png">
             </a>
         </div>
         <% Include.forEach(function(IObject){%>
@@ -121,22 +130,55 @@
 		<%- include(SObject.url,{value:SObject.value})%>
 	<%});%>
 	<script>
-		$("#login").click(function(){
-		    $(".member_box_bg").addClass("changememberopacity");
-			$(".member_box_login").addClass("changemembertrue");
-			$(".member_box_login").css({"left":"30%"});
+		$(document).keypress(function(e) {
+			if(e.which == 13) {
+				SendLoginData();
+			}
 		});
-		$("#register").click(function(){
-		    $(".member_box_bg").addClass("changememberopacity");
-			$(".member_box_register").addClass("changemembertrue");
-			$(".member_box_register").css({"left":"30%"});
-		});
-		$(".member_box_bg").click(function(){
-		    $(".member_box_bg").removeClass("changememberopacity");
+		function hideFloatBox(){
+			$(".member_box_bg").removeClass("changememberopacity");
 			$(".member_box_login").removeClass("changemembertrue");
 			$(".member_box_login").css({"left":"150%"});
 			$(".member_box_register").removeClass("changemembertrue");
 			$(".member_box_register").css({"left":"150%"});
+		}
+		function showRegisterBox(){
+			$(".member_box_bg").addClass("changememberopacity");
+			$(".member_box_register").addClass("changemembertrue");
+			$(".member_box_register").css({"left":"30%"});
+		}
+		function showLoginBox(){
+			$(".member_box_bg").addClass("changememberopacity");
+			$(".member_box_login").addClass("changemembertrue");
+			$(".member_box_login").css({"left":"30%"});
+		}
+		function SendLoginData(){
+			if($('#form_login').valid()==true){
+				$.post("/front/login",{
+					Account:$("#m_account").val(),
+					Password:$("#m_password").val(),
+				},
+				function(data){
+					if(data != 'success'){
+						toastr.error( '',data, {
+							"positionClass": "toast-bottom-full-width",
+							"timeOut": "3000",
+							"closeButton": true
+						});
+					}else{
+						location.reload();
+					}
+				},'html');
+			}
+		}
+		document.getElementById("LoginButton").addEventListener("click",SendLoginData);
+		$(document).ready(function() {	
+			$('#form_login').validate({
+				rules : {
+					m_account : {required : true},
+					m_password : {required : true}
+				}
+			});
 		});
 </script>
 </html>
