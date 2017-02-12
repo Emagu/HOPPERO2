@@ -10,9 +10,12 @@ router.use(bodyParser.urlencoded({
 router.get('/', function (req, res) {//路由攔劫~
     Render(res);
 });
-
+router.post('/login',function(req,res){
+    
+});
 //method
 function Render(res) {
+    
     res.render('layouts/front_layout', {//因為前面在app.js有設定views的root資料夾在./views所以這邊路徑是從./views開始算
         /*
          * 參數資料從server根目錄開始算

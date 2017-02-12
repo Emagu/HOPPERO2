@@ -12,7 +12,7 @@ router.use(bodyParser.urlencoded({
 }));
 router.use(function(req, res, next) {//權限認證
   if(req.session._admin != null)  AccountLib.checkLoginBySession(req.session._admin).then(next,AccountLib.logout);  
-  else res.redirect('/login');
+  else res.redirect('/');
 });
 router.get('/', function (req, res) {
     testRender(res);

@@ -12,7 +12,71 @@
 		<script src=<%= JavaScript.url%>></script>
 	<%});%>
 	<body>
-		<div id="member_box"></div>
+		
+		<div class="member_box_login">
+			<div class="member_box_top"></div>
+				<div class="member_box_text1">
+                	會員帳號：
+                	<input  class="member_box_input" name="m_account" value="" type="text">
+                </div>
+
+                <div class="member_box_text2">
+                	密碼：
+                	<input  class="member_box_input" name="m_password" type="password">
+                </div>
+            <div class="clear"></div>   
+	        <div class="small_button">
+	            <a href=""><button type="button" class="button_blue" style="margin-right:10px">忘記密碼?</button></a>
+	            <a href=""><button type="button" class="button_blue" style="margin-left:10px">註冊</button></a>
+	        </div>
+	        <div class="all_button">
+	            <button type="submit" class="button_red">確認送出</button>
+	        </div>
+			<div class="member_box_bottom"></div>
+		</div>
+
+		<div class="member_box_register">
+			<div class="member_box_top"></div>
+				<div class="member_box_text1">
+                	帳號：
+                	<input  class="member_box_input" name="m_account" value="" type="text">
+                </div>
+
+                <div class="member_box_text3">
+                	密碼：
+                	<input  class="member_box_input" name="m_password" type="password">
+                </div>
+
+                <div class="member_box_text3">
+                	確認密碼：
+                	<input  class="member_box_input" name="m_password_check" type="text">
+                </div>
+
+                <div class="member_box_text3">
+                	信箱：
+                	<input  class="member_box_input" name="m_mail" type="text">
+                </div>
+
+                <div class="member_box_text3">
+                	非機器人認證：
+                	<input  class="member_box_input" name="m_usercheck" type="text">
+                </div>
+
+                <div class="member_box_text3">
+                	使用條例：
+                	<div  class="member_box_usetext">我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範</div>
+                </div>
+                <div class="member_box_text3">
+                	我同意使用條例的規範:
+                	<input  class="member_box_input" name="m_yes" type="checkbox">
+                </div>
+            <div class="clear"></div>   
+	        <div class="all_button">
+	            <button type="submit" class="button_red">確認送出</button>
+	        </div>
+			<div class="member_box_bottom"></div>
+		</div>
+		<div class="member_box_bg"></div>
 		<div id="wrap_top">
 			<div id="logopic">
 				<a href="/"><img src="public/images/logo.png" ></a>
@@ -25,7 +89,10 @@
 				<li><a href="/process">購物流程</a></li>
 				<li><a href="/contact">聯繫方式</a></li>
 			</ul>
-			<div id="member"><span id="login"><a>登入</a></span><span id="register"><a>註冊</a></span></div>
+			<div id="member">
+				<span id="login"><a>登入</a></span>
+				<span id="register"><a>註冊</a></span>
+			</div>
 			<div class="clear"></div>
 		</div>
 		<div id="wrap_top_hide"></div>
@@ -53,4 +120,23 @@
 	<% Script.forEach(function(SObject){%>
 		<%- include(SObject.url,{value:SObject.value})%>
 	<%});%>
+	<script>
+		$("#login").click(function(){
+		    $(".member_box_bg").addClass("changememberopacity");
+			$(".member_box_login").addClass("changemembertrue");
+			$(".member_box_login").css({"left":"30%"});
+		});
+		$("#register").click(function(){
+		    $(".member_box_bg").addClass("changememberopacity");
+			$(".member_box_register").addClass("changemembertrue");
+			$(".member_box_register").css({"left":"30%"});
+		});
+		$(".member_box_bg").click(function(){
+		    $(".member_box_bg").removeClass("changememberopacity");
+			$(".member_box_login").removeClass("changemembertrue");
+			$(".member_box_login").css({"left":"150%"});
+			$(".member_box_register").removeClass("changemembertrue");
+			$(".member_box_register").css({"left":"150%"});
+		});
+</script>
 </html>
