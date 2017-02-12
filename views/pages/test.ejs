@@ -1,0 +1,11 @@
+收件人NO: <input type="text" id="SendTo"></input><br>
+內容:     <input type="text" id="Message"></input>
+<script>
+    var messageBar = document.getElementById("Message");
+    messageBar.addEventListener("keydown",function(key){
+        if(key.key=="Enter"){
+            sendMessage($("#SendTo").val(),$("#Message").val());
+		    messageBar.value = "";
+        }
+    });
+</script>

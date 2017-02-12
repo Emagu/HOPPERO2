@@ -1,0 +1,62 @@
+<script type="text/javascript" src="public/js/socket.io.js" ></script>
+<script>
+    function getMail(mailID){
+        $.post("./mail/getMail",{
+            MailNO:mailID
+		},function(data){
+		    var mailBox = document.getElementById("Mail");
+		    mailBox = document.createElement("div");
+		    var node = document.createElement("LI");
+            node.appendChild(document.createTextNode("標題:"+data.MailTitle)); 
+            mailBox.appendChild(node);
+            var node = document.createElement("LI");
+            node.appendChild(document.createTextNode("寄件人:"+data.Sender)); 
+            mailBox.appendChild(node);
+            node = document.createElement("LI");
+            node.appendChild(document.createTextNode("發送時間:"+data.Time)); 
+            mailBox.appendChild(node);
+            node = document.createElement("LI");
+            node.appendChild(document.createTextNode("內容:"+data.MailMessage)); 
+            mailBox.appendChild(node);
+		},'json');
+    }
+    function getMailList(){
+        function addMailEvent(MailNO,LI){
+            LI.addEventListener("click",function(){
+                getMail(MailNO);
+            });
+            return LI;
+        }
+        $.post("./mail/getMailList",{
+            type:0
+		},function(data){
+		    var mailListBox = document.getElementById("MailList");
+		    data.forEach(function(mail){
+		        var node = document.createElement("LI");                 
+                var textnode = document.createTextNode(mail.MailTitle+" "+mail.Time);
+                node.appendChild(textnode); 
+                mailListBox.appendChild(addMailEvent(mail.MailNO,node)); 
+		        console.log(mail);
+		    });
+		},'json');
+    }
+    var SOCKET = io();
+    SOCKET.on("SendNewMailCount",function(msg){//接收
+        console.log(msg);
+    });
+    function sendMessage(RecipientNO,MessageTitle,Message){//發送
+        $.post("./mail/send",{
+            MessageTitle:MessageTitle,
+            Message:Message,
+			SendTo:RecipientNO
+		},function(data){
+			if(data != 'secces'){
+				toastr.error( '',data, {
+					"positionClass": "toast-bottom-full-width",
+					"timeOut": "3000",
+					"closeButton": true
+				});
+			}
+		},'html');
+    }
+</script>

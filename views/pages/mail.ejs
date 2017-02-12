@@ -1,0 +1,17 @@
+收件人NO: <input type="text" id="SendTo"></input><br>
+標題:     <input type="text" id="MessageTitle"></input><br>
+內容:     <input type="text" id="Message"></input>
+<input type="button" onclick = "getMailList()" value="重新整理"></input><br>
+<div id="MailList"style="height:100px;width:280px;overflow:auto;background-color:yellowgreen;color:white;scrollbar-base-color:gold;font-family:sans-serif;padding:10px;"></div><br>
+<div id="Mail"style="height:300px;width:280px;overflow:auto;background-color:yellowgreen;color:white;scrollbar-base-color:gold;font-family:sans-serif;padding:10px;"></div>
+<script>
+    var messageBar = document.getElementById("Message");
+    var messageTitleBar = document.getElementById("MessageTitle");
+    messageBar.addEventListener("keydown",function(key){
+        if(key.key=="Enter"){
+            sendMessage($("#SendTo").val(),$("#MessageTitle").val(),$("#Message").val());
+		    messageBar.value = "";
+		    messageTitleBar.value = "";
+        }
+    });
+</script>

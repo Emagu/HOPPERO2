@@ -1,0 +1,39 @@
+<script>
+	$(function(){
+		$(document).keypress(function(e) {
+			if(e.which == 13) {
+				SendLoginData();
+			}
+		});
+	});
+	function SendLoginData(){
+		if($('#form_login').valid() ==true){
+			$.post("./login/login",{
+					Account:$("#Account").val(),
+					Password:$("#Password").val(),
+				},
+				function(data){
+					console.log(data);
+					if(data != 'success'){
+						toastr.error( '',data, {
+							"positionClass": "toast-bottom-full-width",
+							"timeOut": "3000",
+							"closeButton": true
+						});
+					}else{
+						location.href = './mail';
+					}
+			},'html');
+		}
+	}
+	document.getElementById("LoginButton").addEventListener("click",SendLoginData);
+	$(document).ready(function() {	
+		$('#form_login').validate({
+			rules : {
+				Account : {required : true},
+				Password : {required : true}
+			}
+		});
+	});
+	
+</script>

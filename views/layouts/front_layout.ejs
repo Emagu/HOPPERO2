@@ -1,0 +1,56 @@
+<html>
+	<head>
+		<title><%= Title%></title>
+	</head>
+	<script src="public/js/jquery.js"></script>
+	<link rel="stylesheet" href="public/css/w3.css">
+	<link rel="stylesheet" href="public/css/desktop.css">
+	<% CSSs.forEach(function(CSS){ %>
+		<link rel="stylesheet" href = <%= CSS.url%>>
+	<%});%>
+	<% JavaScripts.forEach(function(JavaScript){ %>
+		<script src=<%= JavaScript.url%>></script>
+	<%});%>
+	<body>
+		<div id="member_box"></div>
+		<div id="wrap_top">
+			<div id="logopic">
+				<a href="/"><img src="public/images/logo.png" ></a>
+			</div>
+			<ul>
+				<li><a href="/info">公司簡介</a></li>
+				<li>最新消息</li>
+				<li><a href="/productList">產品列表</a></li>
+				<li><a href="/patent">產品專利</a></li>
+				<li><a href="/process">購物流程</a></li>
+				<li><a href="/contact">聯繫方式</a></li>
+			</ul>
+			<div id="member"><span id="login"><a>登入</a></span><span id="register"><a>註冊</a></span></div>
+			<div class="clear"></div>
+		</div>
+		<div id="wrap_top_hide"></div>
+		<div id="side">
+            <a href="">
+                <img src="public/images/shop.png">
+            </a>
+        </div>
+        <% Include.forEach(function(IObject){%>
+			<%- include(IObject.url,{value:IObject.value})%>
+		<%});%>	
+	</body>
+	<div id="white_box"></div>
+	<div id="footer">
+		<div class="footer_text1">
+	        地址：<%= Value.address%><br>
+			電話：<%= Value.phone%> 　傳真：<%= Value.fax%>
+	    </div>
+		<div class="footer_text2">
+	        <span class="service_tele">消費者服務專線：<%= Value.ConsumerLine%></span><br>
+			<span class="service_mail">信箱：<a href="mailto:<%= Value.mail%>"><%= Value.mail%></a></span>
+	    </div>
+		<div class="clear"></div>
+	</div>
+	<% Script.forEach(function(SObject){%>
+		<%- include(SObject.url,{value:SObject.value})%>
+	<%});%>
+</html>

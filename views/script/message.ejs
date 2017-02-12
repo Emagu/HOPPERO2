@@ -1,0 +1,21 @@
+<script type="text/javascript" src="public/js/socket.io.js" ></script>
+<script>
+    function sendMessage(RecipientNO,Message){//發送
+        $.post("./page/send",{
+            Message:Message,
+			SendTo:RecipientNO
+		},function(data){
+			if(data != 'secces'){
+				toastr.error( '',data, {
+					"positionClass": "toast-bottom-full-width",
+					"timeOut": "3000",
+					"closeButton": true
+				});
+			}
+		},'html');
+    }
+    var SOCKET = io();
+    SOCKET.on("SendMessage",function(msg){//接收
+        console.log(msg);
+    });
+</script>
