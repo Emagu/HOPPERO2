@@ -82,6 +82,11 @@
 				width:40%;
 				cursor: pointer;
 			}
+			#logout{
+				float:left;
+				width:40%;
+				cursor: pointer;
+			}
 			#login:hover, #register:hover{
 				color:#EB655D;
 			}

@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var Sql = require("../lib/MySQL_X");
 var Tool = require("../lib/tool");
 var AccountRule = require("../config/Account");
+var AccountLib = require("../lib/Account");
 var router = express.Router();
 router.use(bodyParser.json());       // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({
@@ -192,14 +193,9 @@ router.post("/register", function (req, res) {
  * ----------------------------
  * 重新導向登入畫面
  **/
-router.post("/logout", function(req, res) {
-    if(req.session._admin != null) delete req.session._admin;
-    res.redirect('/');
-});
+router.post("/logout", AccountLib.logout);
 function getRouter(url) {
     var router = require('./Front/' + url);
     return router;
 }
-
-
 module.exports = router;

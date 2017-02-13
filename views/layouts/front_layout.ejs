@@ -97,8 +97,7 @@
 					<span id="login" onclick="showLoginBox()"><a>登入</a></span>
 					<span id="register" onclick="showRegisterBox()"><a>註冊</a></span>
 				<% }else{ %>
-					
-					<span id="logout"><a>登出</a></span>
+					<span id="logout" onclick="Logout()"><a>登出</a></span>
 				<% } %>
 				
 			</div>
@@ -214,6 +213,14 @@
 					}
 				},'html');
 			}
+		}
+		function Logout(){
+			$.post("/front/logout",{},
+			function(data){
+				if(data=="return"){
+					location.href = "/";
+				}
+			},'html');
 		}
 </script>
 </html>
