@@ -17,14 +17,14 @@
 	<body>
 		<div class="member_box_login">
 			<div class="member_box_top"></div>
-			<form id = "form_login">
+			<form id="form_login">
 				<div class="member_box_text1">
                 	會員帳號：
-                	<input  class="member_box_input" name="m_account" id="m_account" value="" type="text">
+                	<input  class="member_box_input" name="m_login_account" value="" type="text">
                 </div>
 				<div class="member_box_text2">
 					密碼：
-                	<input  class="member_box_input" name="m_password" id="m_password" type="password">
+                	<input  class="member_box_input" name="m_login_password" type="password">
                 </div>
             	<div class="clear"></div>   
 	       		<div class="small_button">
@@ -32,51 +32,51 @@
             		<a onclick="alert('註冊')"><button type="button" class="button_blue" style="margin-left:10px">註冊</button></a>
 	        	</div>
 	        	<div class="all_button">
-					<button type="sumit" class="button_red" id="LoginButton">確認送出</button>
+					<button type="button" class="button_red" onclick="SendLoginData()">確認送出</button>
 				</div>
 				<div class="member_box_bottom"></div>
 			</form>
 		</div>
-
 		<div class="member_box_register">
 			<div class="member_box_top"></div>
+			<form id="form_register">
 				<div class="member_box_text1">
                 	帳號：
-                	<input  class="member_box_input" name="m_account" value="" type="text">
+                	<input  class="member_box_input" name="m_register_account" value="" type="text">
                 </div>
-
                 <div class="member_box_text3">
                 	密碼：
-                	<input  class="member_box_input" name="m_password" type="password">
+                	<input  class="member_box_input" name="m_register_password" type="password">
                 </div>
-
                 <div class="member_box_text3">
                 	確認密碼：
-                	<input  class="member_box_input" name="m_password_check" type="text">
+                	<input  class="member_box_input" name="m_register_password_check" type="password">
                 </div>
-
                 <div class="member_box_text3">
                 	信箱：
-                	<input  class="member_box_input" name="m_mail" type="text">
+                	<input  class="member_box_input" name="m_register_mail" type="text">
                 </div>
-
                 <div class="member_box_text3">
-                	非機器人認證：
-                	<input  class="member_box_input" name="m_usercheck" type="text">
+                	姓名：
+                	<input  class="member_box_input" name="m_register_name" type="text">
                 </div>
-
+                <!--<div class="member_box_text3">-->
+                <!--	非機器人認證：-->
+                <!--	<input  class="member_box_input" name="m_usercheck" type="text">-->
+                <!--</div>-->
                 <div class="member_box_text3">
                 	使用條例：
-                	<div  class="member_box_usetext">我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範我同意使用條例的規範</div>
+                	<iframe class="member_box_usetext" src="../public/html/rule.html" height:"300px"frameborder="0" scrolling="auto"></iframe>
                 </div>
                 <div class="member_box_text3">
                 	我同意使用條例的規範:
-                	<input  class="member_box_input" name="m_yes" type="checkbox">
+                	<input  class="member_box_input" name="m_register_yes" type="checkbox">
                 </div>
-            <div class="clear"></div>   
-	        <div class="all_button">
-	            <button type="submit" class="button_red">確認送出</button>
-	        </div>
+                <div class="clear"></div>   
+		        <div class="all_button">
+		            <button type="button" class="button_red" onclick="SendRegisterData()">確認送出</button>
+		        </div>
+			</form>
 			<div class="member_box_bottom"></div>
 		</div>
 		<div class="member_box_bg" onclick="hideFloatBox()"></div>
@@ -130,9 +130,14 @@
 		<%- include(SObject.url,{value:SObject.value})%>
 	<%});%>
 	<script>
-		$(document).keypress(function(e) {
+		$("#form_login").keypress(function(e) {
 			if(e.which == 13) {
 				SendLoginData();
+			}
+		});
+		$("#form_register").keypress(function(e) {
+			if(e.which == 13) {
+				SendRegisterData();
 			}
 		});
 		function hideFloatBox(){
@@ -143,11 +148,27 @@
 			$(".member_box_register").css({"left":"150%"});
 		}
 		function showRegisterBox(){
+			$('#form_register').validate({
+				rules : {
+					m_register_account : {required : true},
+					m_register_password : {required : true},
+					m_register_password_check: {required : true},
+					m_register_mail: {required : true},
+					m_register_name: {required : true},
+					m_register_yes: {required : true}
+				}
+			});
 			$(".member_box_bg").addClass("changememberopacity");
 			$(".member_box_register").addClass("changemembertrue");
 			$(".member_box_register").css({"left":"30%"});
 		}
 		function showLoginBox(){
+			$('#form_login').validate({
+				rules : {
+					m_login_account: {required : true},
+					m_login_password: {required : true}
+				}
+			});
 			$(".member_box_bg").addClass("changememberopacity");
 			$(".member_box_login").addClass("changemembertrue");
 			$(".member_box_login").css({"left":"30%"});
@@ -155,8 +176,8 @@
 		function SendLoginData(){
 			if($('#form_login').valid()==true){
 				$.post("/front/login",{
-					Account:$("#m_account").val(),
-					Password:$("#m_password").val(),
+					Account:$("input[name='m_login_account']").val(),
+					Password:$("input[name='m_login_password']").val(),
 				},
 				function(data){
 					if(data != 'success'){
@@ -171,14 +192,28 @@
 				},'html');
 			}
 		}
-		document.getElementById("LoginButton").addEventListener("click",SendLoginData);
-		$(document).ready(function() {	
-			$('#form_login').validate({
-				rules : {
-					m_account : {required : true},
-					m_password : {required : true}
-				}
-			});
-		});
+		function SendRegisterData(){
+			if($('#form_register').valid()==true){
+				$.post("/front/register",{
+					Account:$("input[name='m_register_account']").val(),
+					Password:$("input[name='m_register_password']").val(),
+					Password_RE:$("input[name='m_register_password_check']").val(),
+					Email:$("input[name='m_register_mail']").val(),
+					Name:$("input[name='m_register_name']").val(),
+				},
+				function(data){
+					if(data != 'success'){
+						toastr.error( '',data, {
+							"positionClass": "toast-bottom-full-width",
+							"timeOut": "3000",
+							"closeButton": true
+						});
+					}else{
+						alert("註冊成功");
+						location.reload();
+					}
+				},'html');
+			}
+		}
 </script>
 </html>

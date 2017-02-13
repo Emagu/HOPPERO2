@@ -3,6 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var Sql = require("../lib/MySQL_X");
 var Tool = require("../lib/tool");
+var AccountRule = require("../config/Account");
 var router = express.Router();
 router.use(bodyParser.json());       // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({
@@ -84,40 +85,100 @@ router.post("/login", function (req, res) {
  **/
 router.post("/register", function (req, res) {
     /*資料格試驗證*/
+    var newData = [];
+    var AllPass = true;
     if(req.body.Account!=null){
-        
-    }
-    else{
-        var db = new Sql.DB();
-        var newData = [
-            {
+        var accountTest = req.body.Account.length;
+        if(AccountRule.AccountMin > accountTest || accountTest > AccountRule.AccountMax){
+            res.send("帳號格式錯誤");
+            AllPass = false;
+        }else{
+            newData.push({
         		key:"UA01",
     		    value:req.body.Account,
     		    type:"ENCRYPT"
-    	    },{
-        	    key:"UA02",
+    	    });
+        }
+    }else{
+        res.send("帳號格式錯誤");
+        AllPass = false;
+    }
+    if(req.body.Password!=null){
+        var passwordTest = req.body.Password.length;
+        if(AccountRule.PasswordMin > passwordTest || passwordTest > AccountRule.PasswordMax){
+            res.send("密碼格式錯誤");
+            AllPass = false;
+        }
+    }else{
+        res.send("密碼格式錯誤");
+        AllPass = false;
+    }
+    if(req.body.Password_RE!=null){
+        var passwordReTest = req.body.Password_RE.length;
+        if(AccountRule.PasswordMin > passwordReTest || passwordReTest > AccountRule.PasswordMax){
+            res.send("兩次密碼輸入不相同");
+            AllPass = false;
+        }else if(req.body.Password_RE != req.body.Password){
+            res.send("兩次密碼輸入不相同");
+            AllPass = false;
+        }else{
+            newData.push({
+        		key:"UA02",
     		    value:req.body.Password,
     		    type:"HASH"
-    	    },{
-        		key:"UA03",
-    		    value:req.body.Phone,
-    		    type:"ENCRYPT"
-    	    },{
-        	    key:"UA04",
+    	    });
+        }
+    }else{
+        res.send("兩次密碼輸入不相同");
+        AllPass = false;
+    }
+    // if(req.body.Phone!=null){
+    //     var PhoneTest = req.body.Phone;
+    //     if(AccountRule.PhoneRegularize.test(PhoneTest)){
+    //         // res.send("手機格式錯誤");
+    //         // AllPass = false;
+    //     }else{
+    //         newData.push({
+    //     		key:"UA03",
+    // 		    value:req.body.Phone,
+    // 		    type:"ENCRYPT"
+    // 	    });
+    //     }
+    // }else{
+    //     res.send("手機格式錯誤");
+    //     AllPass = false;
+    // }
+    if(req.body.Email!=null){
+        var EmailTest = req.body.Email;
+        if(AccountRule.MailRegularize.test(EmailTest)){
+            res.send("信箱格式錯誤");
+            AllPass = false;
+        }else{
+            newData.push({
+        		key:"UA04",
     	        value:req.body.Email,
     	        type:"ENCRYPT"
-    	    },{
-        		key:"UA05",
-    		    value:req.body.Name,
-    		    type:"ENCRYPT"
-    	    },{
-        		key:"UA000",
-    		    value:Tool.getTimeZone()
-    	    },{
-        		key:"UA001",
-    		    value:Tool.getTimeZone()
-    	    }
-        ];
+    	    });
+        }
+    }else{
+        res.send("信箱格式錯誤");
+        AllPass = false;
+    }
+    if(AllPass){
+        var db = new Sql.DB();
+        newData.push({
+            key:"UA05",
+            value:req.body.Name,
+    		type:"ENCRYPT"
+        });
+        newData.push({
+            key:"UA000",
+            value:Tool.getTimeZone()
+        });
+        newData.push({
+            key:"UA001",
+            value:Tool.getTimeZone()
+        });
         db.insert(newData,'UserAccount').then(function(data){
             res.send("success");
         },function error(msg) {

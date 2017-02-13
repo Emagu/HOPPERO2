@@ -24,7 +24,6 @@ function getRouter(url) {
     return router;
 }
 var Router = {
-    login: getRouter("login"),
     message: getRouter("message"),
     mail: getRouter("mail"),
     front: getRouter("front")
@@ -34,5 +33,4 @@ app.get('/', function (req, res) {
      res.redirect('/front');//後端控制前端跳轉路由
 });
 app.use('/mail', Router.mail);
-app.use('/login', Router.login);
 app.use('/front', Router.front);

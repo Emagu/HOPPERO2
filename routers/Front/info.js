@@ -9,16 +9,15 @@ router.use(bodyParser.urlencoded({
     extended: true
 }));
 router.get('/', function (req, res) {//路由攔劫~
-    var login = false;
     if(req.session._admin != null){
         AccountLib.checkLoginBySession(req.session._admin)
         .then(function(){
-            login = true;
-        }).finally(function(){
-            Render(res,login);
+            Render(res,true);
+        },function(){
+            Render(res,false);
         });
     }else{
-        Render(res,login);
+        Render(res,false);
     }
 });
 
