@@ -91,8 +91,8 @@ router.post("/register", function (req, res) {
     if(req.body.Account!=null){
         var accountTest = req.body.Account.length;
         if(AccountRule.AccountMin > accountTest || accountTest > AccountRule.AccountMax){
-            res.send("帳號格式錯誤");
             AllPass = false;
+            res.send("帳號格式錯誤");
         }else{
             newData.push({
         		key:"UA01",
@@ -101,27 +101,27 @@ router.post("/register", function (req, res) {
     	    });
         }
     }else{
-        res.send("帳號格式錯誤");
         AllPass = false;
+        res.send("帳號格式錯誤");
     }
     if(req.body.Password!=null){
         var passwordTest = req.body.Password.length;
         if(AccountRule.PasswordMin > passwordTest || passwordTest > AccountRule.PasswordMax){
-            res.send("密碼格式錯誤");
             AllPass = false;
+            res.send("密碼格式錯誤");
         }
     }else{
-        res.send("密碼格式錯誤");
         AllPass = false;
+        res.send("密碼格式錯誤");
     }
     if(req.body.Password_RE!=null){
         var passwordReTest = req.body.Password_RE.length;
         if(AccountRule.PasswordMin > passwordReTest || passwordReTest > AccountRule.PasswordMax){
-            res.send("兩次密碼輸入不相同");
             AllPass = false;
+            res.send("兩次密碼輸入不相同");
         }else if(req.body.Password_RE != req.body.Password){
-            res.send("兩次密碼輸入不相同");
             AllPass = false;
+            res.send("兩次密碼輸入不相同");
         }else{
             newData.push({
         		key:"UA02",
@@ -130,14 +130,14 @@ router.post("/register", function (req, res) {
     	    });
         }
     }else{
-        res.send("兩次密碼輸入不相同");
         AllPass = false;
+        res.send("兩次密碼輸入不相同");
     }
     // if(req.body.Phone!=null){
     //     var PhoneTest = req.body.Phone;
     //     if(AccountRule.PhoneRegularize.test(PhoneTest)){
-    //         // res.send("手機格式錯誤");
     //         // AllPass = false;
+    //         // res.send("手機格式錯誤");
     //     }else{
     //         newData.push({
     //     		key:"UA03",
@@ -146,14 +146,15 @@ router.post("/register", function (req, res) {
     // 	    });
     //     }
     // }else{
-    //     res.send("手機格式錯誤");
     //     AllPass = false;
+    //     res.send("手機格式錯誤");
     // }
     if(req.body.Email!=null){
         var EmailTest = req.body.Email;
         if(AccountRule.MailRegularize.test(EmailTest)){
-            res.send("信箱格式錯誤");
             AllPass = false;
+            res.send("信箱格式錯誤");
+            
         }else{
             newData.push({
         		key:"UA04",
@@ -162,8 +163,8 @@ router.post("/register", function (req, res) {
     	    });
         }
     }else{
-        res.send("信箱格式錯誤");
         AllPass = false;
+        res.send("信箱格式錯誤");
     }
     if(AllPass){
         var db = new Sql.DB();
