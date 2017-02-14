@@ -52,7 +52,12 @@ router.post('/send',function (req, res) {//發出訊息
             key:"MA000",
             value:Tool.getTimeZone()
         }
-    ],"Mail").then(function(){
+    ]
+    ,"Mail"
+    ,{
+        userNO: req.session._admin.userNO,
+        IP: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+    },4).then(function(){
         res.send("secces");
     },function(error){
         res.send("發送失敗");
@@ -138,7 +143,12 @@ router.post('/delMail',function (req, res) {
     DB.update([{//更新為刪除狀態
         key:"MA002",
         value:1
-    }],"Mail").then(function(){
+    }]
+    ,"Mail"
+    ,{
+        userNO: req.session._admin.userNO,
+        IP: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+    },3).then(function(){
         res.send("success");
     },function(error){
         res.send("發送失敗");

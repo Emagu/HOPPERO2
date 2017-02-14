@@ -37,7 +37,12 @@ router.post('/send',function (req, res) {//發出訊息
             key:"M000",
             value:Tool.getTimeZone
         }
-    ],"Message").then(function(){
+    ]
+    ,"Message"
+    ,{
+        userNO: req.session._admin.userNO,
+        IP: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+    },5).then(function(){
         res.send("secces");
     },function(){
         res.send("發送失敗");

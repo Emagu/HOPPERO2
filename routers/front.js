@@ -57,7 +57,11 @@ router.post("/login", function (req, res) {
                     key:"UA001",
                     value:Tool.getTimeZone()
                 }
-            ],"UserAccount").then(function(){
+            ]
+            ,"UserAccount",{
+                userNO: resultData[0].userNO,
+                IP: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+            },1).then(function(){
                 console.log("success");
             },function(err){
                 console.log(err);
@@ -181,7 +185,10 @@ router.post("/register", function (req, res) {
             key:"UA001",
             value:Tool.getTimeZone()
         });
-        db.insert(newData,'UserAccount').then(function(data){
+        db.insert(newData,'UserAccount',{
+            userNO: -1,//系統
+            IP: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        },2).then(function(data){
             res.send("success");
         },function error(msg) {
             console.log(msg);
