@@ -1,7 +1,11 @@
 {
-  "name": "lively",
+  "name": "Hopper",
   "version": "0.0.0",
-  "description": "LIVELY",
+  "description": "Hopper",
+  "repository": {
+		"type": "git",
+		"url": "https://github.com/Emagu/HOPPERO2"
+	},
   "main": "app.js",
   "author": "emagu",
   "dependencies": {
