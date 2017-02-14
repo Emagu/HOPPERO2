@@ -101,7 +101,7 @@ router.post("/register", function (req, res) {
             newData.push({
         		key:"UA01",
     		    value:req.body.Account,
-    		    type:"ENCRYPT"
+    		    action:"ENCRYPT"
     	    });
         }
     }else{
@@ -130,7 +130,7 @@ router.post("/register", function (req, res) {
             newData.push({
         		key:"UA02",
     		    value:req.body.Password,
-    		    type:"HASH"
+    		    action:"HASH"
     	    });
         }
     }else{
@@ -163,7 +163,7 @@ router.post("/register", function (req, res) {
             newData.push({
         		key:"UA04",
     	        value:req.body.Email,
-    	        type:"ENCRYPT"
+    	        action:"ENCRYPT"
     	    });
         }
     }else{

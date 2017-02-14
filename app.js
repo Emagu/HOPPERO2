@@ -24,11 +24,13 @@ function getRouter(url) {
 const Router = {
     message: getRouter("message"),
     mail: getRouter("mail"),
-    front: getRouter("front")
+    front: getRouter("front"),
+    verify: getRouter("verify")
 };
 //設定router
 app.get('/', function (req, res) {
     res.redirect('/front');//後端控制前端跳轉路由
 });
 app.use('/mail', Router.mail);
+app.use('/verify', Router.verify);
 app.use('/front', Router.front);
