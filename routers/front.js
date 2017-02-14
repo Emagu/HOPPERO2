@@ -171,7 +171,7 @@ router.post("/register", function (req, res) {
         newData.push({
             key:"UA05",
             value:req.body.Name,
-    		type:"ENCRYPT"
+    		action:"ENCRYPT"
         });
         newData.push({
             key:"UA000",

@@ -41,12 +41,12 @@ router.post('/send',function (req, res) {//發出訊息
         {
             key:"MA01",
             value:req.body.MessageTitle,
-            type:"ENCRYPT"
+            action:"ENCRYPT"
         },
         {
             key:"MA02",
             value:req.body.Message,
-            type:"ENCRYPT"
+            action:"ENCRYPT"
         },
         {
             key:"MA000",
