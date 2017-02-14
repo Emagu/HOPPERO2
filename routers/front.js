@@ -1,17 +1,17 @@
 'use strict';
-var express = require('express');
-var bodyParser = require('body-parser');
-var Sql = require("../lib/MySQL_X");
-var Tool = require("../lib/tool");
-var AccountRule = require("../config/Account");
-var AccountLib = require("../lib/Account");
-var router = express.Router();
+const express = require('express');
+const bodyParser = require('body-parser');
+const Sql = require("../lib/MySQL_X");
+const Tool = require("../lib/tool");
+const AccountRule = require("../config/Account");
+const AccountLib = require("../lib/Account");
+let router = express.Router();
 router.use(bodyParser.json());       // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({
      // to support URL-encoded bodies
     extended: true
 }));
-var Router = {
+const Router = {
     index: getRouter("index"),
     info: getRouter("info"),
     patent: getRouter("patent"),
@@ -38,7 +38,7 @@ router.use('/productList',Router.productList);
  * @status {string} 各類錯誤訊息
  **/
 router.post("/login", function (req, res) {
-    var DB = new Sql.DB();
+    let DB = new Sql.DB();
     DB.select("UA00",'DEFAULT','userNO');
     DB.select("UA01",'DEFAULT','userID');
     DB.select("UA001");
@@ -86,10 +86,10 @@ router.post("/login", function (req, res) {
  **/
 router.post("/register", function (req, res) {
     /*資料格試驗證*/
-    var newData = [];
-    var AllPass = true;
+    let newData = [];
+    let AllPass = true;
     if(req.body.Account!=null){
-        var accountTest = req.body.Account.length;
+        let accountTest = req.body.Account.length;
         if(AccountRule.AccountMin > accountTest || accountTest > AccountRule.AccountMax){
             AllPass = false;
             res.send("帳號格式錯誤");
@@ -105,7 +105,7 @@ router.post("/register", function (req, res) {
         res.send("帳號格式錯誤");
     }
     if(req.body.Password!=null){
-        var passwordTest = req.body.Password.length;
+        let passwordTest = req.body.Password.length;
         if(AccountRule.PasswordMin > passwordTest || passwordTest > AccountRule.PasswordMax){
             AllPass = false;
             res.send("密碼格式錯誤");
@@ -115,7 +115,7 @@ router.post("/register", function (req, res) {
         res.send("密碼格式錯誤");
     }
     if(req.body.Password_RE!=null){
-        var passwordReTest = req.body.Password_RE.length;
+        let passwordReTest = req.body.Password_RE.length;
         if(AccountRule.PasswordMin > passwordReTest || passwordReTest > AccountRule.PasswordMax){
             AllPass = false;
             res.send("兩次密碼輸入不相同");
@@ -134,7 +134,7 @@ router.post("/register", function (req, res) {
         res.send("兩次密碼輸入不相同");
     }
     // if(req.body.Phone!=null){
-    //     var PhoneTest = req.body.Phone;
+    //     let PhoneTest = req.body.Phone;
     //     if(AccountRule.PhoneRegularize.test(PhoneTest)){
     //         // AllPass = false;
     //         // res.send("手機格式錯誤");
@@ -150,7 +150,7 @@ router.post("/register", function (req, res) {
     //     res.send("手機格式錯誤");
     // }
     if(req.body.Email!=null){
-        var EmailTest = req.body.Email;
+        let EmailTest = req.body.Email;
         if(AccountRule.MailRegularize.test(EmailTest)){
             AllPass = false;
             res.send("信箱格式錯誤");
@@ -167,7 +167,7 @@ router.post("/register", function (req, res) {
         res.send("信箱格式錯誤");
     }
     if(AllPass){
-        var db = new Sql.DB();
+        let db = new Sql.DB();
         newData.push({
             key:"UA05",
             value:req.body.Name,
@@ -196,7 +196,7 @@ router.post("/register", function (req, res) {
  **/
 router.post("/logout", AccountLib.logout);
 function getRouter(url) {
-    var router = require('./Front/' + url);
+    let router = require('./Front/' + url);
     return router;
 }
 module.exports = router;

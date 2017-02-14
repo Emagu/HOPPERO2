@@ -1,10 +1,10 @@
 'use strict';
-var express = require('express');
-var bodyParser = require('body-parser');
-var Sql = require("../lib/MySQL_X");
-var Tool = require("../lib/tool");
-var AccountLib = require("../lib/Account");
-var router = express.Router();
+const express = require('express');
+const bodyParser = require('body-parser');
+const Sql = require("../lib/MySQL_X");
+const Tool = require("../lib/tool");
+const AccountLib = require("../lib/Account");
+let router = express.Router();
 router.use(bodyParser.json());       // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({
     // to support URL-encoded bodies
@@ -28,7 +28,7 @@ router.get('/', function (req, res) {
  * @status {string} 各類錯誤訊息
  **/
 router.post('/send',function (req, res) {//發出訊息
-    var DB = new Sql.DB();
+    let DB = new Sql.DB();
     DB.insert([
         {
             key:"UA00A",
@@ -72,7 +72,7 @@ router.post('/send',function (req, res) {//發出訊息
  **/
 router.post('/getMailList',function (req, res) {
     console.log(req.body.type);
-    var DB = new Sql.DB();
+    let DB = new Sql.DB();
     DB.select("MA00","DEFAULT","MailNO");
     DB.select("MA01","DECRYPT","MailTitle");
     DB.select("MA000","DEFAULT","Time");
@@ -103,7 +103,7 @@ router.post('/getMailList',function (req, res) {
  * @status {array} 信件內容
  **/
 router.post('/getMail',function (req, res) {
-    var DB = new Sql.DB();
+    let DB = new Sql.DB();
     DB.select("MA01","DECRYPT","MailTitle");
     DB.select("MA02","DECRYPT","MailMessage");
     DB.select("MA000","DEFAULT","Time");
@@ -111,7 +111,7 @@ router.post('/getMail',function (req, res) {
     DB.where("MA00",req.body.MailNO);
     DB.join("UserAccount","UserAccount.UA00=Mail.UA00B");
     DB.get("Mail").then(function(data){
-        var DB = new Sql.DB();
+        let DB = new Sql.DB();
         DB.where("MA00",req.body.MailNO);
         DB.update([{//更新已讀狀態
             key:"MA001",
@@ -133,7 +133,7 @@ router.post('/getMail',function (req, res) {
  * @status {string} success
  **/
 router.post('/delMail',function (req, res) {
-    var DB = new Sql.DB();
+    let DB = new Sql.DB();
     DB.where("MA00",req.body.MailNO);
     DB.update([{//更新為刪除狀態
         key:"MA002",

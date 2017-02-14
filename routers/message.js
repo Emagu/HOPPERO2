@@ -1,10 +1,10 @@
 'use strict';
-var express = require('express');
-var bodyParser = require('body-parser');
-var Sql = require("../lib/MySQL_X");
-var Tool = require("../lib/tool");
-var AccountLib = require("../lib/Account");
-var router = express.Router();
+const express = require('express');
+const bodyParser = require('body-parser');
+const Sql = require("../lib/MySQL_X");
+const Tool = require("../lib/tool");
+const AccountLib = require("../lib/Account");
+let router = express.Router();
 router.use(bodyParser.json());       // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({
     // to support URL-encoded bodies
@@ -18,7 +18,7 @@ router.get('/', function (req, res) {//路由攔劫~
     testRender(res);
 });
 router.post('/send',function (req, res) {//發出訊息
-    var DB = new Sql.DB();
+    let DB = new Sql.DB();
     DB.insert([
         {
             key:"UA00A",
