@@ -5,6 +5,7 @@ const Sql = require("../lib/MySQL_X");
 const Tool = require("../lib/tool");
 const AccountRule = require("../config/Account");
 const AccountLib = require("../lib/Account");
+const STMPMail = require("../lib/STMP");
 let router = express.Router();
 router.use(bodyParser.json());       // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({
@@ -155,10 +156,9 @@ router.post("/register", function (req, res) {
     // }
     if(req.body.Email!=null){
         let EmailTest = req.body.Email;
-        if(AccountRule.MailRegularize.test(EmailTest)){
+        if(!AccountRule.MailRegularize.test(EmailTest)){
             AllPass = false;
             res.send("信箱格式錯誤");
-            
         }else{
             newData.push({
         		key:"UA04",
@@ -171,6 +171,7 @@ router.post("/register", function (req, res) {
         res.send("信箱格式錯誤");
     }
     if(AllPass){
+		let userIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         let db = new Sql.DB();
         newData.push({
             key:"UA05",
@@ -187,9 +188,18 @@ router.post("/register", function (req, res) {
         });
         db.insert(newData,'UserAccount',{
             userNO: -1,//系統
-            IP: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+            IP: userIP
         },2).then(function(data){
-            res.send("success");
+			STMPMail.register({
+				account : req.body.Account,
+				mail : req.body.Email,
+				IP: userIP,
+				userNO: data.insertId
+			},'http://' + req.get('host')).then(function(){
+				res.send("success");
+			},function(err){
+				console.error(err);
+			});
         },function error(msg) {
             console.log(msg);
             res.send("註冊失敗");

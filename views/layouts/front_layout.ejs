@@ -80,6 +80,12 @@
 			</form>
 			<div class="member_box_bottom"></div>
 		</div>
+		<div class="member_box_register_success">
+			<div class="member_box_top"></div>
+			<h1>註冊成功!請前往信箱收取認證信</h1>
+			<button type="button" class="button_red" onclick="hideFloatBox()">確認</button>
+			<div class="member_box_bottom"></div>
+		</div>
 		<div class="member_box_bg" onclick="hideFloatBox()"></div>
 		<div id="wrap_top">
 			<div id="logopic">
@@ -152,6 +158,13 @@
 			$(".member_box_login").css({"left":"150%"});
 			$(".member_box_register").removeClass("changemembertrue");
 			$(".member_box_register").css({"left":"150%"});
+			$(".member_box_register_success").removeClass("changemembertrue");
+			$(".member_box_register_success").css({"left":"150%"});
+		}
+		function showRegisterSuccessBox(){
+			$(".member_box_bg").addClass("changememberopacity");
+			$(".member_box_register_success").addClass("changemembertrue");
+			$(".member_box_register_success").css({"left":"30%"});
 		}
 		function showRegisterBox(){
 			$('#form_register').validate({
@@ -215,8 +228,7 @@
 							"closeButton": true
 						});
 					}else{
-						alert("註冊成功");
-						location.reload();
+						showRegisterSuccessBox();
 					}
 				},'html');
 			}
@@ -241,6 +253,6 @@
 		$("#side_member").mouseout(function(){
 			$("#side_member img").attr("src","../public/images/member.png");
 		});
-
+	
 </script>
 </html>

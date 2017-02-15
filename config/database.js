@@ -4,7 +4,7 @@ module.exports = {
 	host: '127.0.0.1',
 	port: 3307,
 	user: 'root',
-	password: '',
+	password: '913021',
 	database: 'Hopper',
 	multipleStatements: true
 	//reconnectTimeout: 2000

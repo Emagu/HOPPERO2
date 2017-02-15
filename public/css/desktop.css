@@ -380,7 +380,7 @@
 				position:relative;
 				top:1px;
 			}
-			.member_box_login, .member_box_register{
+			.member_box_login, .member_box_register, .member_box_register_success{
 				position:fixed;
 				width:40%;
 				height:70%;
