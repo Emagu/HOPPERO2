@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%= Title%></title>
+	<link rel="stylesheet" href="../public/css/w3.css">
+	<link rel="stylesheet" href="../public/css/my_member.css">
+	<script src="../public/js/jquery.js"></script>
+	<% CSSs.forEach(function(CSS){
+		if(CSS.local=="head")%>
+			<link rel="stylesheet" href=<%= CSS.url%>>
+	<%});%>
+	<% JavaScripts.forEach(function(JavaScript){
+		if(JavaScript.local=="head")%>
+		<script src=<%= JavaScript.url%>></script>
+	<%});%>
+</head>
+<body>
+	<div id="wrap_top">
+			<div id="logopic">
+				<a href="/front"><img src="../public/images/logo.png"/></a>
+			</div>
+			<div class="wrap_top_hr"></div>
+			<p class="wrap_top_p">會員中心</p>
+			<div id="member"><span id="user"><a>Jacky Lee</a></span><span id="logout"><a>登出</a></span></div>
+			<div class="clear"></div>
+	</div>
+	<div id="wrap_body">
+		<div id="wrap_left">
+			<li><a href="">訂單追蹤</a></li><br/>
+			<li><a href="">購買紀錄</a></li><br/>
+			<li><a href="">站內信</a></li><br/>
+			<li><a href="">商品Q&A</a></li><br/>
+			<li><a href="">個人資料</a></li><br/>
+			<li><a href="">最愛商品</a></li><br/>
+			<div class="clear"></div>
+		</div>
+		<div class="wrap_body_hr"></div>
+		<div id="wrap_right">
+			<% Include.forEach(function(IObject){%>
+				<%- include(IObject.url,{value:IObject.value})%>
+			<%});%>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div id="wrap_footer">
+			
+	</div>
+	<script src="../public/js/my_member.js"></script>
+</body>
+</html>

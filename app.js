@@ -25,6 +25,7 @@ const Router = {
     message: getRouter("message"),
     mail: getRouter("mail"),
     front: getRouter("front"),
+	member: getRouter("member"),
     verify: getRouter("verify")
 };
 //設定router
@@ -34,3 +35,4 @@ app.get('/', function (req, res) {
 app.use('/mail', Router.mail);
 app.use('/verify', Router.verify);
 app.use('/front', Router.front);
+app.use('/member', Router.member);
