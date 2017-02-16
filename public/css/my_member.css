@@ -11,7 +11,7 @@ body{
 	position:relative;
 	width:100%;
 	background-color:white;
-	border-top:8px #0047AB solid;
+	/*border-top:8px #0047AB solid;*/
 }
 #wrap_top p{
 	line-height:100px;
@@ -30,8 +30,14 @@ body{
 }
 @keyframes changetoleft_p
 {
-	from {margin-left:7%;line-height:100px;}
-	to {margin-left:3%;line-height:50px;}
+	from {
+		margin-left:15%;
+		line-height:100px;
+	}
+	to {
+		margin-left:3%;
+		line-height:50px;
+	}
 }
 .wrap_top_hr{position:absolute; width:1%; height:70%; left:28%; top:15%; border:none; border-right:1.5px solid #0047AB; float:left;}
 .wrap_body_hr{position:fixed; width:1%; height:100%; left:18%; top:0%; box-shadow: 5px 0 5px -5px #333; float:left; display:none;}
