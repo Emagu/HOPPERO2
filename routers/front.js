@@ -42,18 +42,18 @@ router.post("/login", function (req, res) {
     let DB = new Sql.DB();
     DB.select("UA00",'DEFAULT','userNO');
     DB.select("UA01",'DEFAULT','userID');
-    DB.select("UA001");
+    DB.select("UA002");
     DB.where("UA01",req.body.Account.trim(),"=","AND","ENCRYPT");
     DB.where("UA02",req.body.Password.trim(),"=","AND","HASH");
     DB.get("UserAccount").then(function(resultData){
         if (resultData.length <= 0) {
             res.send("帳號或密碼不正確!");
-        } else if (resultData[0].UA002 == 0) {
+        } else if (resultData[0].UA002=='0') {
             res.send("帳號尚未認證啟用！");
         } else {//登入成功
             DB = new Sql.DB();
             DB.where("UA00",resultData[0].userNO.toString());
-            DB.update([
+            DB.update([	
                 {
                     key:"UA001",
                     value:Tool.getTimeZone()
@@ -213,6 +213,45 @@ router.post("/register", function (req, res) {
  * 重新導向登入畫面
  **/
 router.post("/logout", AccountLib.logout);
+router.post("/setPassword", function(req, res){
+	if(req.session.verify.userNO!=null){
+		if(req.body.Password!=null){
+			if(req.body.Password_RE!=null){
+				if(req.body.Password_RE==req.body.Password){
+					let DB = new Sql.DB();
+					DB.where("UA00",req.session.verify.userNO);
+					DB.update([
+						{
+							key:"UA02",
+							value:req.body.Password,
+							action:"HASH"
+						},
+						{
+							key:"UA000",
+							value:Tool.getTimeZone()
+						}
+					],"UserAccount",{
+						userNO: req.session.verify.userNO,
+						IP: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+					},9).then(function(){
+						res.send("success");
+					},function(err){
+						console.error(err);
+						res.send("error");
+					});
+				}else{
+					res.send("兩次密碼輸入不相同");
+				}
+			}else{
+				res.send("再次密碼輸入錯誤");
+			}
+		}else{
+			res.send("密碼輸入錯誤");
+		}
+	}else{
+		res.send("error");
+	}
+});
 function getRouter(url) {
     let router = require('./Front/' + url);
     return router;

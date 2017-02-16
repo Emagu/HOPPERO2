@@ -5,8 +5,9 @@
 	<script src="../public/js/jquery.js"></script>
 	<script src="../public/js/jquery.validate.js"></script>
 	<script src="../public/js/toastr.min.js"></script>
+	<script src="../public/js/front.js"></script>
 	<link rel="stylesheet" href="../public/css/w3.css">
-	<link rel="stylesheet" href="../public/css/desktop.css">
+	<link rel="stylesheet" href="../public/css/front.css">
 	<link rel="stylesheet" href="../public/css/toastr.min.css">
 	<% CSSs.forEach(function(CSS){ %>
 		<link rel="stylesheet" href = <%= CSS.url%>>
@@ -28,7 +29,7 @@
                 </div>
             	<div class="clear"></div>   
 	       		<div class="small_button">
-					<a onclick="alert('忘記')"><button type="button" class="button_blue" style="margin-right:10px">忘記密碼?</button></a>
+					<a onclick="hideFloatBox();showForgetPasswordBox();"><button type="button" class="button_blue" style="margin-right:10px">忘記密碼?</button></a>
 	            	<a onclick="hideFloatBox();showRegisterBox();"><button type="button" class="button_blue" style="margin-left:10px" >註冊</button></a>
 				</div>
 	        	<div class="all_button">
@@ -80,10 +81,32 @@
 			</form>
 			<div class="member_box_bottom"></div>
 		</div>
-		<div class="member_box_register_success">
+		<div class="member_box_success">
 			<div class="member_box_top"></div>
-			<h1>註冊成功!請前往信箱收取認證信</h1>
+			<h1 id="success_float_text"></h1>
 			<button type="button" class="button_red" onclick="hideFloatBox()">確認</button>
+			<div class="member_box_bottom"></div>
+		</div>
+		<div class="member_box_forget_password">
+			<div class="member_box_top"></div>
+			<form id="form_forget_password">
+				<div class="member_box_text1">
+                	請輸入會員帳號：
+                	<input  class="member_box_input" name="m_forget_password_account" value="" type="text">
+                </div>
+				<div class="member_box_text1">
+                	請輸入會員信箱：
+                	<input  class="member_box_input" name="m_forget_password_mail" value="" type="text">
+                </div>
+                <!--<div class="member_box_text3">-->
+                <!--	非機器人認證：-->
+                <!--	<input  class="member_box_input" name="m_usercheck" type="text">-->
+                <!--</div>-->
+                <div class="clear"></div>   
+		        <div class="all_button">
+		            <button type="button" class="button_red" onclick="SendForgetPassword()">確認送出</button>
+		        </div>
+			</form>
 			<div class="member_box_bottom"></div>
 		</div>
 		<div class="member_box_bg" onclick="hideFloatBox()"></div>
@@ -111,11 +134,14 @@
 		</div>
 		<div id="wrap_top_hide"></div>
 		<div id="side_member">
-		    <a href="">
+			<% if(!Login){%>
+				<a onclick="showLoginBox()">
+			<% }else{ %>
+				<a herf="/member">
+			<% } %>
 		    	<img src="../public/images/member.png">
 		  	</a>
 		</div>
-
 		<div id="side">
             <a href="">
                 <img src="../public/images/shop.png">
@@ -152,107 +178,18 @@
 				SendRegisterData();
 			}
 		});
-		function hideFloatBox(){
-			$(".member_box_bg").removeClass("changememberopacity");
-			$(".member_box_login").removeClass("changemembertrue");
-			$(".member_box_login").css({"left":"150%"});
-			$(".member_box_register").removeClass("changemembertrue");
-			$(".member_box_register").css({"left":"150%"});
-			$(".member_box_register_success").removeClass("changemembertrue");
-			$(".member_box_register_success").css({"left":"150%"});
-		}
-		function showRegisterSuccessBox(){
-			$(".member_box_bg").addClass("changememberopacity");
-			$(".member_box_register_success").addClass("changemembertrue");
-			$(".member_box_register_success").css({"left":"30%"});
-		}
-		function showRegisterBox(){
-			$('#form_register').validate({
-				rules : {
-					m_register_account : {required : true},
-					m_register_password : {required : true},
-					m_register_password_check: {required : true},
-					m_register_mail: {required : true},
-					m_register_name: {required : true},
-					m_register_yes: {required : true}
-				}
-			});
-			$(".member_box_bg").addClass("changememberopacity");
-			$(".member_box_register").addClass("changemembertrue");
-			$(".member_box_register").css({"left":"30%"});
-		}
-		function showLoginBox(){
-			$('#form_login').validate({
-				rules : {
-					m_login_account: {required : true},
-					m_login_password: {required : true}
-				}
-			});
-			$(".member_box_bg").addClass("changememberopacity");
-			$(".member_box_login").addClass("changemembertrue");
-			$(".member_box_login").css({"left":"30%"});
-		}
-		function SendLoginData(){
-			if($('#form_login').valid()==true){
-				$.post("/front/login",{
-					Account:$("input[name='m_login_account']").val(),
-					Password:$("input[name='m_login_password']").val(),
-				},
-				function(data){
-					if(data != 'success'){
-						toastr.error( '',data, {
-							"positionClass": "toast-bottom-full-width",
-							"timeOut": "3000",
-							"closeButton": true
-						});
-					}else{
-						location.reload();
-					}
-				},'html');
-			}
-		}
-		function SendRegisterData(){
-			if($('#form_register').valid()==true){
-				$.post("/front/register",{
-					Account:$("input[name='m_register_account']").val(),
-					Password:$("input[name='m_register_password']").val(),
-					Password_RE:$("input[name='m_register_password_check']").val(),
-					Email:$("input[name='m_register_mail']").val(),
-					Name:$("input[name='m_register_name']").val(),
-				},
-				function(data){
-					if(data != 'success'){
-						toastr.error( '',data, {
-							"positionClass": "toast-bottom-full-width",
-							"timeOut": "3000",
-							"closeButton": true
-						});
-					}else{
-						showRegisterSuccessBox();
-					}
-				},'html');
-			}
-		}
-		function Logout(){
-			$.post("/front/logout",{},
-			function(data){
-				if(data=="return"){
-					location.href = "/";
-				}
-			},'html');
-		}
 		$("#side").mouseover(function() {
-            $("#side img").attr("src", "../public/images/shop_hover.png");
-        });
-        $("#side").mouseout(function() {
-            $("#side img").attr("src", "../public/images/shop.png");
-        });
+			$("#side img").attr("src", "../public/images/shop_hover.png");
+		});
+		$("#side").mouseout(function() {
+			$("#side img").attr("src", "../public/images/shop.png");
+		});
 		$("#side_member").mouseover(function(){
 			$("#side_member img").attr("src","../public/images/member_hover.png");
 		});
 		$("#side_member").mouseout(function(){
 			$("#side_member img").attr("src","../public/images/member.png");
 		});
-	
-</script>
+		
+	</script>
 </html>
