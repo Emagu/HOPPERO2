@@ -13,9 +13,7 @@ router.use(bodyParser.urlencoded({
 }));
 router.get('/', function (req, res) {
     let verifyCode = req.query.id;//認證碼
-	console.log(verifyCode);
 	verifyCode = decodeURIComponent(verifyCode);
-	console.log(verifyCode);
 	let DB = new Sql.DB();
 	DB.select("UA00");
 	DB.select("CM001");
