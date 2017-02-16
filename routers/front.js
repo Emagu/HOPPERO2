@@ -65,7 +65,7 @@ router.post("/login", function (req, res) {
             },1).then(function(){
                 console.log("success");
             },function(err){
-                console.log(err);
+                console.error(err);
             });
             req.session._admin = {
                 userNO: resultData[0].userNO,
@@ -190,7 +190,7 @@ router.post("/register", function (req, res) {
             userNO: -1,//系統
             IP: userIP
         },2).then(function(data){
-			STMPMail.register({
+			STMPMail.register({//寄出認證信
 				account : req.body.Account,
 				mail : req.body.Email,
 				IP: userIP,
@@ -199,9 +199,10 @@ router.post("/register", function (req, res) {
 				res.send("success");
 			},function(err){
 				console.error(err);
+				res.send("認證信寄出失敗");
 			});
-        },function error(msg) {
-            console.log(msg);
+        },function(err) {
+            console.error(err);
             res.send("註冊失敗");
         });
     }

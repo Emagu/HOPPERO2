@@ -10,19 +10,19 @@ router.use(bodyParser.urlencoded({
      // to support URL-encoded bodies
     extended: true
 }));
-router.get('/', function (req, res) {//路由攔劫~
-    let verifyCode = req.query.id;
+router.get('/', function (req, res) {
+    let verifyCode = req.query.id;//認證碼
 	let DB = new Sql.DB();
 	DB.select("UA00");
 	DB.select("CM001");
 	DB.select("CM02");
 	DB.where("CM01",verifyCode);
-	DB.get("CertificationMail").then(function(result){
+	DB.get("CertificationMail").then(function(result){//取得認證碼資料
 		if(result.length>0){
 			let verifyData = result[0];
-			if(Tool.compareTime(Tool.getTimeZone(),verifyData.CM001)==-1){//現在時間比失效時間早
-				switch(verifyData.CM02){
-					case 1:
+			if(Tool.compareTime(Tool.getTimeZone(),verifyData.CM001)==-1){//認證碼是否過期
+				switch(verifyData.CM02){//認證模式
+					case 1://會員信箱認證
 						let DB = new Sql.DB();
 						DB.where("UA00",verifyData.UA00);
 						DB.update([
@@ -55,4 +55,23 @@ router.get('/', function (req, res) {//路由攔劫~
 		res.send("error");
 	});
 });
+function Render(res,login) {
+    res.render('layouts/front_layout', {
+        Title: "聯繫我們",
+        Value: require("../../config/company"),
+        Login: login,
+        CSSs: [
+        ],
+        JavaScripts: [
+            
+        ],
+        //為了傳送Value所以根目錄一樣是./views開始算
+        Include: [
+            { url: "../pages/Front/contact", value: {} }
+        ],
+        Script: [	
+            
+        ]
+    });
+}
 module.exports = router;

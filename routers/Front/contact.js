@@ -9,24 +9,16 @@ router.use(bodyParser.urlencoded({
     extended: true
 }));
 router.get('/', function (req, res) {//路由攔劫~
-    if(req.session._admin != null){
-        AccountLib.checkLoginBySession(req.session._admin)
-        .then(function(){
-            Render(res,true);
-        },function(){
-            Render(res,false);
-        });
-    }else{
-        Render(res,false);
-    }
+	AccountLib.checkLoginBySession(req.session.)
+	.then(function(){
+		Render(res,true);
+	},function(){
+		Render(res,false);
+	});
 });
-
 //method
 function Render(res,login) {
-    res.render('layouts/front_layout', {//因為前面在app.js有設定views的root資料夾在./views所以這邊路徑是從./views開始算
-        /*
-         * 參數資料從server根目錄開始算
-         * */
+    res.render('layouts/front_layout', {
         Title: "聯繫我們",
         Value: require("../../config/company"),
         Login: login,
