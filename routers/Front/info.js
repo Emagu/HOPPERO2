@@ -9,7 +9,7 @@ router.use(bodyParser.urlencoded({
     extended: true
 }));
 router.get('/', function (req, res) {//路由攔劫~
-	AccountLib.checkLoginBySession(req.session.)
+	AccountLib.checkLoginBySession(req.session)
 	.then(function(){
 		Render(res,true);
 	},function(){

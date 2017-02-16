@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const STMPMail = require("../lib/STMP");
 const Sql = require("../lib/MySQL_X");
 const Tool = require("../lib/tool");
+const AccountLib = require("../lib/Account");
 let router = express.Router();
 router.use(bodyParser.json());       // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({
@@ -34,44 +35,124 @@ router.get('/', function (req, res) {
 							userNO: verifyData.UA00,
 							IP: req.headers['x-forwarded-for'] || req.connection.remoteAddress
 						},8).then(function(){
-							res.send("success");
+							registerRender(req,res,"success");
 						},function(err){
 							console.error(err);
-							res.send("fail");
+							registerRender(req,res,"error",verifyData.CM02);
 						})
 						break;
 					default:
 						console.log("無效識別碼");
-						res.send("error");
+						failRender(req,res,"fail",verifyData.CM02);
 						break;
 				}
+			}else{
+				console.log("過期識別碼");
+				failRender(req,res,"overDate",verifyData.CM02);
 			}
 		}else{
 			console.log("找不到識別碼");
-			res.send("error");
+			failRender(req,res,"fail");
 		}
 	},function(err){
 		console.error(err);
-		res.send("error");
+		failRender(req,res,"error");
 	});
 });
-function Render(res,login) {
-    res.render('layouts/front_layout', {
-        Title: "聯繫我們",
-        Value: require("../../config/company"),
-        Login: login,
-        CSSs: [
-        ],
-        JavaScripts: [
-            
-        ],
-        //為了傳送Value所以根目錄一樣是./views開始算
-        Include: [
-            { url: "../pages/Front/contact", value: {} }
-        ],
-        Script: [	
-            
-        ]
-    });
+function registerRender(req,res,status,type) {
+	AccountLib.checkLoginBySession(req.session)
+	.then(function(){
+		res.render('layouts/front_layout', {
+			Title: "會員信箱認證",
+			Value: require("../config/company"),
+			Login: true,
+			CSSs: [
+			],
+			JavaScripts: [
+			],
+			Include: [
+				{ 	
+					url: "../pages/Verify/register", 
+					value: {
+						status:status,
+						type:type
+					} 
+				}
+			],
+			Script: [	
+				
+			]
+		});
+	},function(){
+		res.render('layouts/front_layout', {
+			Title: "會員信箱認證",
+			Value: require("../config/company"),
+			Login: false,
+			CSSs: [
+			],
+			JavaScripts: [
+			],
+			Include: [
+				{ 	
+					url: "../pages/Verify/register",
+					value: {
+						status:status,
+						type:type
+					} 
+				}
+			],
+			Script: [	
+				
+			]
+		});
+	});
+}
+function failRender(req,res,status,type) {
+	AccountLib.checkLoginBySession(req.session)
+	.then(function(){
+		res.render('layouts/front_layout', {
+			Title: "會員信箱認證",
+			Value: require("../config/company"),
+			Login: true,
+			CSSs: [
+			],
+			JavaScripts: [
+			],
+			Include: [
+				{ 
+					url: "../pages/Verify/fail", 
+					value: {
+						status:status,
+						type:type
+					} 
+				}
+			],
+			Script: [	
+				
+			]
+		});
+	},function(){
+		res.render('layouts/front_layout', {
+			Title: "會員信箱認證",
+			Value: require("../config/company"),
+			Login: false,
+			CSSs: [
+			],
+			JavaScripts: [
+			],
+			Include: [
+				{ 
+					url: "../pages/Verify/fail", 
+					value: {
+						status:status,
+						type:type
+					} 
+				}
+			],
+			Script: [	
+				
+			]
+		});
+	});
 }
 module.exports = router;

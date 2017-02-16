@@ -1,0 +1,24 @@
+<H1 id="verifyText"></H1>
+<script>
+	let status = '<%= value.status %>';
+	let type = '<%= value.type %>';
+	let verifyText = document.getElementById("verifyText");
+	switch(status){
+		case "success":
+			verifyText.innerHTML = "認證成功!請重新登入!";
+			break;
+		case "fail":
+			verifyText.innerHTML = "認證失敗!請確認是否為有效認證碼!";
+			break;
+		case "error":
+			verifyText.innerHTML = "認證失敗!請洽詢客服人員!";
+			break;
+		case "overDate":
+			verifyText.innerHTML = "認證失敗!認證碼過期!請點擊下方按鈕重新發信!";
+			break;
+		default:
+			verifyText.innerHTML = "認證失敗!請洽詢客服人員!";
+			break;
+		break;
+	}
+</script>
