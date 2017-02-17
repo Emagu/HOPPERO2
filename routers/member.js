@@ -11,13 +11,19 @@ router.use(bodyParser.urlencoded({
      // to support URL-encoded bodies
     extended: true
 }));
+router.use(function(req, res, next) {//權限認證
+    if(req.session._admin != null)  AccountLib.checkLoginBySession(req.session).then(next,AccountLib.logout);  
+    else res.redirect('/');
+});
 const Router = {
-    index: getRouter("index")
+    index: getRouter("index"),
+	commodity: getRouter("commodity")//商品管理
 };
-router.get('/', function (req, res) {//路由攔劫~
-    res.redirect('/member/index');//後端控制前端跳轉路由
+router.get('/', function (req, res) {
+    res.redirect('/member/index');
 });
 router.use('/index', Router.index);
+router.use('/commodity', Router.commodity);
 function getRouter(url) {
     let router = require('./Member/' + url);
     return router;

@@ -19,10 +19,7 @@ router.get('/', function (req, res) {//路由攔劫~
 
 //method
 function Render(res,login) {
-    res.render('layouts/front_layout', {//因為前面在app.js有設定views的root資料夾在./views所以這邊路徑是從./views開始算
-        /*
-         * 參數資料從server根目錄開始算
-         * */
+    res.render('layouts/front_layout', {
         Title: "公司簡介",
         Value: require("../../config/company"),
         Login: login,
@@ -31,7 +28,6 @@ function Render(res,login) {
         JavaScripts: [
             
         ],
-        //為了傳送Value所以根目錄一樣是./views開始算
         Include: [
             { url: "../pages/Front/info", value: {} }
         ],

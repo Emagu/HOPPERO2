@@ -18,7 +18,8 @@ const Router = {
     patent: getRouter("patent"),
     process: getRouter("process"),
     contact: getRouter("contact"),
-    productList: getRouter("productList")
+    productList: getRouter("productList"),
+	commodity: getRouter("commodity")
 };
 router.get('/', function (req, res) {//路由攔劫~
     res.redirect('/front/index');//後端控制前端跳轉路由
@@ -29,6 +30,7 @@ router.use('/patent',Router.patent);
 router.use('/process',Router.process);
 router.use('/contact',Router.contact);
 router.use('/productList',Router.productList);
+router.use('/commodity', Router.commodity);
 /**
  * 登入
  * @param {string} Account   : 使用者帳號(UA01)

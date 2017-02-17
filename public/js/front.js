@@ -28,9 +28,10 @@ function showSuccessBox(type){
 	switch(type){
 		case "register":
 			$("#success_float_text").text("註冊成功!請前往信箱收取認證信");
+			break;
 		case "ForgetPassword":
 			$("#success_float_text").text("重置密碼的連結已發送至信箱!請前往信箱收取信件");
-		break;
+			break;
 	}
 }
 function showRegisterBox(){
