@@ -1,4 +1,3 @@
-
 	  $(document).scroll(function() {
 	  	if ($(document).scrollTop()>8){
 	  		$("#wrap_top").css({"position":"fixed","z-index":"1001","box-shadow":"0px 1px 3px #888888","min-height":"30px"});

@@ -9,13 +9,14 @@ router.use(bodyParser.urlencoded({
     extended: true
 }));
 router.get('/', function (req, res) {//路由攔劫~
-    Render(res,false);
+    Render(res,req.session._admin);
 });
 //method
-function Render(res) {
+function Render(res,userData) {
     res.render('layouts/member_layout', {
         Title: "管理中心-首頁",
         Value: require("../../config/company"),
+		UserData: userData,
         CSSs: [
         ],
         JavaScripts: [    

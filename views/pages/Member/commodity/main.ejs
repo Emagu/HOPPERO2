@@ -1,0 +1,52 @@
+﻿<div class="wrap_right_top">
+	<a id="button_selectTypeView" onclick="selectTypeView()">商品類管理</a>
+	<a id="button_selectObjectView" onclick="selectObjectView()">商品項管理</a>
+	<a id="button_selectInputView" onclick="selectInputView()">進貨管理</a>
+	<a id="button_selectWSView" onclick="selectWSView()">進銷存報表</a>
+</div>
+<div id="wrap_right_body">
+
+</div>
+<script>
+	function selectTypeView() {
+		$.post("/Member/commodity/selectTypeView", {
+		}, function (data) {
+			$("#wrap_right_body").html(data);
+			$("#button_selectTypeView").css('cursor', 'default');
+			$("#button_selectObjectView").css('cursor', 'pointer');
+			$("#button_selectInputView").css('cursor', 'pointer');
+			$("#button_selectWSView").css('cursor', 'pointer');
+		}, 'html');
+	}
+	function selectObjectView() {
+		$.post("/Member/commodity/selectObjectView", {
+		}, function (data) {
+			$("#wrap_right_body").html(data);
+			$("#button_selectTypeView").css('cursor', 'pointer');
+			$("#button_selectObjectView").css('cursor', 'default');
+			$("#button_selectInputView").css('cursor', 'pointer');
+			$("#button_selectWSView").css('cursor', 'pointer');
+		}, 'html');
+	}
+	function selectInputView() {
+		$.post("/Member/commodity/selectInputView", {
+		}, function (data) {
+			$("#wrap_right_body").html(data);
+			$("#button_selectTypeView").css('cursor', 'pointer');
+			$("#button_selectObjectView").css('cursor', 'pointer');
+			$("#button_selectInputView").css('cursor', 'default');
+			$("#button_selectWSView").css('cursor', 'pointer');
+		}, 'html');
+	}
+	function selectWSView() {
+		$.post("/Member/commodity/selectWSView", {
+		}, function (data) {
+			$("#wrap_right_body").html(data);
+			$("#button_selectTypeView").css('cursor', 'pointer');
+			$("#button_selectObjectView").css('cursor', 'pointer');
+			$("#button_selectInputView").css('cursor', 'pointer');
+			$("#button_selectWSView").css('cursor', 'default');
+		}, 'html');
+	}
+	selectTypeView();
+</script>

@@ -1,0 +1,135 @@
+﻿<script type="text/javascript" src="../../public/js/jquery.ztree.core-3.4.js"></script>
+<script type="text/javascript" src="../../public/js/jquery.ztree.excheck-3.4.js"></script>
+<script type="text/javascript" src="../../public/js/jquery.ztree.exedit-3.4.js"></script>
+<link rel="stylesheet" href="../../public/css/zTreeStyle.css" type="text/css">
+<div>
+	<ul id="treeDemo" class="ztree"></ul>
+</div>
+<script>
+	var setting = {
+		view: {
+			addHoverDom: addHoverDom,
+			removeHoverDom: removeHoverDom
+		},
+		edit: {
+			showRemoveBtn: true,
+			showRenameBtn: true,
+			removeTitle: "刪除",
+			renameTitle: "修改",
+			enable: true,
+			drag: {
+				isMove: true,
+				isCopy: false,
+				next: false,
+				inner: true,
+				prev: true
+			}
+		},
+		data: {
+			simpleData: {
+				enable: true
+			}
+		},
+		callback: {
+			beforeDrag: beforeDrag,
+			beforeDrop: beforeDrop
+		}
+	};
+	var newCount = 1;
+	function addHoverDom(treeId, treeNode) {
+		var sObj = $("#" + treeNode.tId + "_span");
+		if (treeNode.editNameFlag || $("#addBtn_" + treeNode.id).length > 0) return;
+		var addStr = "<span class='button add' id='addBtn_" + treeNode.id
+			+ "' title='add node' onfocus='this.blur();'></span>";
+		sObj.after(addStr);
+		var btn = $("#addBtn_" + treeNode.id);
+		if (btn) btn.bind("click", function () {
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+			zTree.addNodes(treeNode, { id: (100 + newCount), pId: treeNode.id, name: "new node" + (newCount++) });
+			return false;
+		});
+	};
+	function removeHoverDom(treeId, treeNode) {
+		$("#addBtn_" + treeNode.id).unbind().remove();
+	};
+	function beforeDrag(treeId, treeNodes) {
+		for (var i = 0, l = treeNodes.length; i < l; i++) {
+			if (treeNodes[i].drag === false) {
+				return false;
+			}
+		}
+		return true;
+	}
+	function beforeDrop(treeId, treeNodes, targetNode, moveType) {
+		console.log(targetNode);
+		console.log(moveType);
+		return targetNode ? targetNode.drop !== false : true;
+	}
+	function getType() {
+		function addIconEvent(icon, no) {
+			icon.addEventListener("click", function () {
+				if ($('#typeLevel_id_' + no).css("display") == "none") {
+					$('#typeLevel_id_' + no).css("display", "block");
+					icon.src = "../../public/images/open.gif";
+				} else {
+					$('#typeLevel_id_' + no).css("display", "none");
+					icon.src = "../../public/images/close.gif";
+				}
+			});
+			return icon;
+		}
+		function addNewType(newType, no, name) {
+			newType.addEventListener("click", function () {
+				showNewType(no, name);
+			});
+			return newType;
+		}
+		$.post("/Member/commodity/getType", {
+		}, function (data) {
+			var zNodes = new Object();
+			var rootNum = 0;
+			data.forEach(function (type) {
+				if (type.Father == 0) {
+					rootNum++;
+					zNodes['_' + type.NO] = {
+						Rid: type.NO,//真實ID
+						id: rootNum.toString(),//臨時ID
+						pId: type.Father,//父臨時ID
+						name: type.Name,
+						num:0
+					}
+				} else {
+					zNodes['_' + type.Father].num++;
+					zNodes['_' + type.NO] = {
+						Rid: type.NO,//真實ID
+						id: zNodes['_' + type.Father].id + zNodes['_' + type.Father].num.toString(),//臨時ID
+						pId: zNodes['_' + type.Father].id,//父臨時ID
+						name: type.Name,
+						num: 0
+					}
+				}
+			});
+			var FNodes = [];
+			$.each(zNodes,function (index,node) {
+				FNodes.push({
+					Rid: node.Rid,//真實ID
+					id: parseInt(node.id),//臨時ID
+					pId: (typeof node.pId == "string") ? parseInt(node.pId) : node.pId,//父臨時ID
+					name: node.name
+				});
+			});
+			$.fn.zTree.init($("#treeDemo"), setting, FNodes);
+		}, 'json');
+	}
+	getType();
+</script>
+<!--
+  1.	新增類別，避免重覆新增
+  判斷SELECT EXISTS(select PT01 from producttype where PT01 = '類別名稱' );
+  true ->跳出警示窗商品類別已存在
+  false -> insert into `producttype` (`PT01`)values('類別名稱');
+  2.	修改商品類別
+  UPDATE ` producttype ` SET `PT01` = '類別名稱' WHERE `PT00` = '類別流水號';
+  3.	刪除商品類別
+  delete from producttype where PT00 = '類別流水號';
+-->

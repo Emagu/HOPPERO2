@@ -5,13 +5,11 @@
 	<link rel="stylesheet" href="../public/css/w3.css">
 	<link rel="stylesheet" href="../public/css/my_member.css">
 	<script src="../public/js/jquery.js"></script>
-	<% CSSs.forEach(function(CSS){
-		if(CSS.local=="head")%>
-			<link rel="stylesheet" href=<%= CSS.url%>>
+	<% CSSs.forEach(function(CSS){ %>
+		<link rel="stylesheet" href= <%= CSS%> >
 	<%});%>
-	<% JavaScripts.forEach(function(JavaScript){
-		if(JavaScript.local=="head")%>
-		<script src=<%= JavaScript.url%>></script>
+	<% JavaScripts.forEach(function(JavaScript){ %>
+		<script src=<%= JavaScript%>></script>
 	<%});%>
 </head>
 <body>
@@ -26,12 +24,19 @@
 	</div>
 	<div id="wrap_body">
 		<div id="wrap_left">
-			<li><a href="">訂單追蹤</a></li><br/>
-			<li><a href="">購買紀錄</a></li><br/>
+			<% if(UserData.rank>=1){ %>
+				<li><a href="">訂單管理</a></li><br/>
+			<% } %>
+			<% if(UserData.rank>=2){ %>
+				<li><a href="/member/commodity">商品管理</a></li><br/>
+			<% } %>
+			<% if(UserData.rank==0){ %>
+				<li><a href="">購買紀錄</a></li><br/>
+				<li><a href="">最愛商品</a></li><br/>
+			<% } %>
 			<li><a href="">站內信</a></li><br/>
 			<li><a href="">商品Q&A</a></li><br/>
 			<li><a href="">個人資料</a></li><br/>
-			<li><a href="">最愛商品</a></li><br/>
 			<div class="clear"></div>
 		</div>
 		<div class="wrap_body_hr"></div>
@@ -45,6 +50,9 @@
 	<div id="wrap_footer">
 			
 	</div>
-	<script src="../public/js/my_member.js"></script>
+	<script src="../public/js/member.js"></script>
 </body>
+	<% Script.forEach(function(SObject){%>
+		<%- include(SObject.url,{value:SObject.value})%>
+	<%});%>
 </html>

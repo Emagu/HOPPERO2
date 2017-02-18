@@ -12,8 +12,17 @@ router.use(bodyParser.urlencoded({
     extended: true
 }));
 router.use(function(req, res, next) {//權限認證
-    if(req.session._admin != null)  AccountLib.checkLoginBySession(req.session).then(next,AccountLib.logout);  
-    else res.redirect('/');
+    if(req.session._admin != null){
+		AccountLib.checkLoginBySession(req.session).then(function(){
+			req.session._admin.rank = 0;
+			req.session.save();
+			AccountLib.checkMangerBySession(req.session).then(function(rank){
+				req.session._admin.rank = rank;
+				req.session.save();
+				next();
+			},next); 
+		},AccountLib.logout);  
+	}else res.redirect('/');
 });
 const Router = {
     index: getRouter("index"),
