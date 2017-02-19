@@ -1,14 +1,14 @@
 //Need JQuery
 function hideFloatBox(){
-	$(".member_box_bg").removeClass("changememberopacity");
-	$(".member_box_login").removeClass("changemembertrue");
-	$(".member_box_login").css({"left":"150%"});
-	$(".member_box_register").removeClass("changemembertrue");
-	$(".member_box_register").css({"left":"150%"});
-	$(".member_box_success").removeClass("changemembertrue");
-	$(".member_box_success").css({"left":"150%"});
-	$(".member_box_forget_password").removeClass("changemembertrue");
-	$(".member_box_forget_password").css({"left":"150%"});
+	$(".float_box_bg").removeClass("change_float_box_opacity");
+	$("#float_box_login").removeClass("change_float_box_true");
+	$("#float_box_login").css({"left":"150%"});
+	$("#float_box_register").removeClass("change_float_box_true");
+	$("#float_box_register").css({"left":"150%"});
+	$("#float_box_success").removeClass("change_float_box_true");
+	$("#float_box_success").css({"left":"150%"});
+	$("#float_box_forget").removeClass("change_float_box_true");
+	$("#float_box_forget").css({"left":"150%"});
 }
 function showForgetPasswordBox(){
 	$('#form_forget_password').validate({
@@ -17,14 +17,14 @@ function showForgetPasswordBox(){
 			m_forget_password_account : {required : true}
 		}
 	});
-	$(".member_box_bg").addClass("changememberopacity");
-	$(".member_box_forget_password").addClass("changemembertrue");
-	$(".member_box_forget_password").css({"left":"30%"});
+	$(".float_box_bg").addClass("change_float_box_opacity");
+	$("#float_box_forget").addClass("change_float_box_true");
+	$("#float_box_forget").css({"left":"30%"});
 }
 function showSuccessBox(type){
-	$(".member_box_bg").addClass("changememberopacity");
-	$(".member_box_success").addClass("changemembertrue");
-	$(".member_box_success").css({"left":"30%"});
+	$(".float_box_bg").addClass("change_float_box_opacity");
+	$("#float_box_success").addClass("change_float_box_true");
+	$("#float_box_success").css({"left":"30%"});
 	switch(type){
 		case "register":
 			$("#success_float_text").text("註冊成功!請前往信箱收取認證信");
@@ -45,9 +45,9 @@ function showRegisterBox(){
 			m_register_yes: {required : true}
 		}
 	});
-	$(".member_box_bg").addClass("changememberopacity");
-	$(".member_box_register").addClass("changemembertrue");
-	$(".member_box_register").css({"left":"30%"});
+	$(".float_box_bg").addClass("change_float_box_opacity");
+	$("#float_box_register").addClass("change_float_box_true");
+	$("#float_box_register").css({"left":"30%"});
 }
 function showLoginBox(){
 	$('#form_login').validate({
@@ -56,9 +56,9 @@ function showLoginBox(){
 			m_login_password: {required : true}
 		}
 	});
-	$(".member_box_bg").addClass("changememberopacity");
-	$(".member_box_login").addClass("changemembertrue");
-	$(".member_box_login").css({"left":"30%"});
+	$(".float_box_bg").addClass("change_float_box_opacity");
+	$("#float_box_login").addClass("change_float_box_true");
+	$("#float_box_login").css({"left":"30%"});
 }
 function SendLoginData(){
 	if($('#form_login').valid()==true){

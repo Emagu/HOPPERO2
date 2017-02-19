@@ -63,3 +63,5 @@ ExpressApp1.njsproj
 obj/Debug/ExpressApp1.njsprojResolveAssemblyReference.cache
 obj/Debug/ExpressApp1.njsproj.FileListAbsolute.txt
 .vs/ExpressApp1/v14/.suo
+.ntvs_analysis.dat.tmp
+ExpressApp1.sln

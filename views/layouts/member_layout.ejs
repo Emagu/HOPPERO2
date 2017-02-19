@@ -4,7 +4,13 @@
 	<title><%= Title%></title>
 	<link rel="stylesheet" href="../public/css/w3.css">
 	<link rel="stylesheet" href="../public/css/my_member.css">
-	<script src="../public/js/jquery.js"></script>
+    <link rel="stylesheet" href="../public/css/toastr.min.css">
+    <script src="../public/js/jquery.js"></script>
+    <script src="../public/js/jquery.validate.js"></script>
+    <script src="../public/js/toastr.min.js"></script>
+    <script>
+        jQuery.browser={};(function(){jQuery.browser.msie=false; jQuery.browser.version=0;if(navigator.userAgent.match(/MSIE ([0-9]+)./)){ jQuery.browser.msie=true;jQuery.browser.version=RegExp.$1;}})();
+    </script>
 	<% CSSs.forEach(function(CSS){ %>
 		<link rel="stylesheet" href= <%= CSS%> >
 	<%});%>

@@ -299,6 +299,7 @@
 			.clear{
 				clear:both;
 			}
+            /*
 			.button_red {
 				-moz-box-shadow:inset 0px 1px 0px 0px #f5978e;
 				-webkit-box-shadow:inset 0px 1px 0px 0px #f5978e;
@@ -472,7 +473,7 @@
 			  text-align: center;
 			  margin-bottom: 5%;
 			  margin-top:10%;
-			}
+			}*/
 			#side_member{
 				position: fixed;
 				top:70%;

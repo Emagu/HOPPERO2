@@ -16,10 +16,12 @@ function Render(res,userData) {
     res.render('layouts/member_layout', {
         Title: "管理中心-首頁",
         Value: require("../../config/company"),
-		UserData: userData,
+        UserData: userData,
+        Path: '../',
         CSSs: [
         ],
         JavaScripts: [    
+            "../../public/js/jquery.js"
         ],
         Include: [
         ],

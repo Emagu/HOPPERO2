@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="../public/css/w3.css">
 <link rel="stylesheet" href="../public/css/front.css">
 <link rel="stylesheet" href="../public/css/toastr.min.css">
+<link rel="stylesheet" href="../public/css/floatDiv.css">
 	<% CSSs.forEach(function(CSS){ %>
 <link rel="stylesheet" href= <%= CSS.url%>>
 	<%});%>
@@ -16,100 +17,99 @@
 <script src=<%= JavaScript.url%>></script>
 	<%});%>
 <body>
-	<div class="member_box_login">
-		<div class="member_box_top"></div>
+	<div class="float_box" id="float_box_login">
+		<div class="float_box_top"></div>
 		<form id="form_login">
-			<div class="member_box_text1">
+			<div class="float_box_text1">
 				會員帳號：
-				<input class="member_box_input" name="m_login_account" value="" type="text">
+				<input class="float_box_input" name="m_login_account" value="" type="text">
 			</div>
-			<div class="member_box_text2">
+			<div class="float_box_text2">
 				密碼：
-				<input class="member_box_input" name="m_login_password" type="password">
+				<input class="float_box_input" name="m_login_password" type="password">
 			</div>
 			<div class="clear"></div>
 			<div class="small_button">
-				<a onclick="hideFloatBox();showForgetPasswordBox();"><button type="button" class="button_blue" style="margin-right:10px">忘記密碼?</button></a>
-				<a onclick="hideFloatBox();showRegisterBox();"><button type="button" class="button_blue" style="margin-left:10px">註冊</button></a>
+				<button type="button" class="button_blue" style="margin-right:10px" onclick="onclick="hideFloatBox();showForgetPasswordBox();">忘記密碼?</button>
+				<button type="button" class="button_blue" style="margin-left:10px" onclick="hideFloatBox();showRegisterBox();">註冊</button>
 			</div>
 			<div class="all_button">
 				<button type="button" class="button_red" onclick="SendLoginData()">確認送出</button>
 			</div>
-			<div class="member_box_bottom"></div>
 		</form>
-
+        <div class="float_box_bottom"></div>
 	</div>
-	<div class="member_box_register">
-		<div class="member_box_top"></div>
+	<div class="float_box" id="float_box_register">
+		<div class="float_box_top"></div>
 		<form id="form_register">
-			<div class="member_box_text1">
+			<div class="float_box_text1">
 				帳號：
-				<input class="member_box_input" name="m_register_account" value="" type="text">
+				<input class="float_box_input" name="m_register_account" value="" type="text">
 			</div>
-			<div class="member_box_text3">
+			<div class="float_box_text3">
 				密碼：
-				<input class="member_box_input" name="m_register_password" type="password">
+				<input class="float_box_input" name="m_register_password" type="password">
 			</div>
-			<div class="member_box_text3">
+			<div class="float_box_text3">
 				確認密碼：
-				<input class="member_box_input" name="m_register_password_check" type="password">
+				<input class="float_box_input" name="m_register_password_check" type="password">
 			</div>
-			<div class="member_box_text3">
+			<div class="float_box_text3">
 				信箱：
-				<input class="member_box_input" name="m_register_mail" type="text">
+				<input class="float_box_input" name="m_register_mail" type="text">
 			</div>
-			<div class="member_box_text3">
+			<div class="float_box_text3">
 				姓名：
-				<input class="member_box_input" name="m_register_name" type="text">
+				<input class="float_box_input" name="m_register_name" type="text">
 			</div>
-			<!--<div class="member_box_text3">-->
+			<!--<div class="float_box_text3">-->
 			<!--	非機器人認證：-->
-			<!--	<input  class="member_box_input" name="m_usercheck" type="text">-->
+			<!--	<input  class="float_box_input" name="m_usercheck" type="text">-->
 			<!--</div>-->
-			<div class="member_box_text3">
+			<div class="float_box_text3">
 				使用條例：
-				<iframe class="member_box_usetext" src="../public/html/rule.html" height:"300px"frameborder="0" scrolling="auto"></iframe>
+				<iframe class="float_box_usetext" src="../public/html/rule.html" height:"300px"frameborder="0" scrolling="auto"></iframe>
 			</div>
-			<div class="member_box_text3">
+			<div class="float_box_text3">
 				我同意使用條例的規範:
-				<input class="member_box_input" name="m_register_yes" type="checkbox">
+				<input class="float_box_input" name="m_register_yes" type="checkbox">
 			</div>
 			<div class="clear"></div>
 			<div class="all_button">
 				<button type="button" class="button_red" onclick="SendRegisterData()">確認送出</button>
 			</div>
 		</form>
-		<div class="member_box_bottom"></div>
+		<div class="float_box_bottom"></div>
 	</div>
-	<div class="member_box_success">
-		<div class="member_box_top"></div>
+	<div class="float_box"id="float_box_success">
+		<div class="float_box_top"></div>
 		<h1 id="success_float_text"></h1>
 		<button type="button" class="button_red" onclick="hideFloatBox()">確認</button>
-		<div class="member_box_bottom"></div>
+		<div class="float_box_bottom"></div>
 	</div>
-	<div class="member_box_forget_password">
-		<div class="member_box_top"></div>
+	<div class="float_box" id="float_box_forget">
+		<div class="float_box_top"></div>
 		<form id="form_forget_password">
-			<div class="member_box_text1">
+			<div class="float_box_text1">
 				請輸入會員帳號：
-				<input class="member_box_input" name="m_forget_password_account" value="" type="text">
+				<input class="float_box_input" name="m_forget_password_account" value="" type="text">
 			</div>
-			<div class="member_box_text1">
+			<div class="float_box_text1">
 				請輸入會員信箱：
-				<input class="member_box_input" name="m_forget_password_mail" value="" type="text">
+				<input class="float_box_input" name="m_forget_password_mail" value="" type="text">
 			</div>
-			<!--<div class="member_box_text3">-->
+			<!--<div class="float_box_text3">-->
 			<!--	非機器人認證：-->
-			<!--	<input  class="member_box_input" name="m_usercheck" type="text">-->
+			<!--	<input  class="float_box_input" name="m_usercheck" type="text">-->
 			<!--</div>-->
 			<div class="clear"></div>
 			<div class="all_button">
 				<button type="button" class="button_red" onclick="SendForgetPassword()">確認送出</button>
 			</div>
 		</form>
-		<div class="member_box_bottom"></div>
+		<div class="float_box_bottom"></div>
 	</div>
-	<div class="member_box_bg" onclick="hideFloatBox()"></div>
+	<div class="float_box_bg" onclick="hideFloatBox()"></div>
 	<div id="wrap_top">
 		<div id="logopic">
 			<a href="/front"><img src="../public/images/logo.png"></a>
