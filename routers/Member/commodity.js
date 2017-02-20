@@ -47,45 +47,49 @@ router.post('/selectObjectView', function (req, res) {
 });
 router.post('/getObjectTable', function (req, res) {
     console.log(req.body);
+    
     let DB = new Sql.DB();
+    let pageLimit = parseInt(req.body.pageLimit);//單頁數量
+    let pages = parseInt(req.body.pages);//所選頁數
+    let sortColums = req.body.sortSetting.colums;//排列欄位設定資料
+    let firstSort = req.body.sortSetting.sortColums;//最優先排列欄位名稱
     DB.select("DP00", "DEFAULT", "ID");
     DB.select("DP01", "DECRYPT", "Name");
     DB.select("DP02", "DEFAULT", "O_Cost");
     DB.select("DP03", "DEFAULT", "S_Cost");
     DB.select("DP000", "DEFAULT", "Time");
-    DB.limit(0, parseInt(req.body.pageLimit));
-    DB.get("DetailProduct").then(function (resultData) {
-        console.log(resultData);
-        res.json({
-            rowsData: resultData,
-            TotalDataNum: 100
+    if (firstSort != null) {
+        if (sortColums.hasOwnProperty(firstSort)){
+            let sortType = sortColums[firstSort];
+            if (sortType == 'DESC' || sortType == 'desc' || sortType == "ASC" || sortType == "asc") { 
+                DB.orderBy(firstSort, sortType);
+            }
+        }
+    }
+    for (var key in sortColums) {
+        if (sortColums.hasOwnProperty(key)) {
+            let sortType = sortColums[key];
+            if ((sortType == 'DESC' || sortType == 'desc' || sortType == "ASC" || sortType == "asc") && sortType != firstSort) { 
+                DB.orderBy(key, sortType);
+            }
+        }
+    }
+    DB.limit(pages*pageLimit, pageLimit);
+    DB.get("DetailProduct",true).then(function (pageData) {
+        DB.select("1");
+        DB.get("DetailProduct", true).then(function (countData) {
+            res.json({
+                rowsData: pageData,
+                TotalDataNum: countData.length
+            });
+        }, function (err) {
+            console.error(err);
+            res.json("搜尋失敗")
         });
+    }, function (err) {
+        console.error(err);
+        res.json("搜尋失敗")
     });
-    //res.json({
-    //    rowsData: [
-    //        {
-    //            "ID": "4710018028601",
-    //            "Name": "雪畢",
-    //            "O_Cost": "29",
-    //            "S_Cost": "20",
-    //            "Time": "2017/2/18"
-    //        },
-    //        {
-    //            "O_Cost": "29",
-    //            "S_Cost": "20",
-    //            "Time": "2017/2/18"
-    //        }, {
-    //            "ID": "4710018028601",
-    //            "S_Cost": "20",
-    //            "Time": "2017/2/18"
-    //        }, {
-    //            "ID": "4710018028601",
-    //            "Name": "雪畢",
-    //            "O_Cost": "29",
-    //        }
-    //    ],
-    //    TotalDataNum: 4
-    //});
 });
 router.post('/newObject', function (req, res) {
     //資料處理

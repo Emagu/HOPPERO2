@@ -47,9 +47,20 @@
     <div class="float_box_bottom"></div>
 </div>
 <div class="float_box_bg" onclick="hideFloatBox()"></div>
-
+<label>單頁顯示：</label>
+<select id="table_page_size" onchange='dataTable.resizePage($("#table_page_size").val())'>
+    <option value="10">10</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+</select>
+<!--<label>搜尋類型：</label>
+<select id="table_search" onchange='dataTable.resizePage($("#table_page_size").val())'>
+    <option value="10">10</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+</select>-->
 <label>搜尋：</label>
-<input type="text" id="searchBarText"/>
+<input type="text" id="searchBarText" />
 <label>搜尋區間：</label>
 <input type="text" id="reportrange" value="<%= value.Date %> ~ <%= value.Date %>" />
 <input type="button" onclick="showAddObjectBox()" value="新增商品" />
@@ -104,6 +115,7 @@
                 }
             }
         ],
+        pageLimit: $("#table_page_size").val(),
         dataUrl: "/member/commodity/getObjectTable"
     });
     $('#reportrange').daterangepicker({
