@@ -110,6 +110,15 @@
         $.post("/Member/commodity/getType", {
         }, function (data) {
             var zNodes = new Object();
+            zNodes['_0'] = {
+                Rid: 0,//真實ID
+                id: '0',//臨時ID
+                pId: -1,//父臨時ID
+                name: '商品類型',
+                num: 0,
+                disableRemove: true,
+                disableEidt: true
+            }
             var rootNum = 0;
             data.forEach(function (type) {
                 if (type.Father == 0) {
@@ -138,7 +147,9 @@
                     Rid: node.Rid,//真實ID
                     id: parseInt(node.id),//臨時ID
                     pId: (typeof node.pId == "string") ? parseInt(node.pId) : node.pId,//父臨時ID
-                    name: node.name
+                    name: node.name,
+                    disableEidt: node.disableEidt,
+                    disableRemove: node.disableRemove
                 });
             });
             $.fn.zTree.init($("#treeDemo"), setting, FNodes);

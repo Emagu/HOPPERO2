@@ -253,7 +253,7 @@
 	},
 	//method of event handler
 	_handler = {
-		onHoverOverNode: function(event, node) {
+            onHoverOverNode: function (event, node) {
 			var setting = data.getSetting(event.data.treeId),
 			root = data.getRoot(setting);
 			if (root.curHoverNode != node) {
@@ -771,8 +771,8 @@
 	},
 	//method of operate ztree dom
 	_view = {
-		addEditBtn: function(setting, node) {
-			if (node.editNameFlag || $("#" + node.tId + consts.id.EDIT).length > 0) {
+            addEditBtn: function (setting, node) {
+            if (node.editNameFlag || $("#" + node.tId + consts.id.EDIT).length > 0 || node.disableEidt) {
 				return;
 			}
 			if (!tools.apply(setting.edit.showRenameBtn, [setting.treeId, node], setting.edit.showRenameBtn)) {
@@ -791,7 +791,7 @@
 				).show();
 		},
 		addRemoveBtn: function(setting, node) {
-			if (node.editNameFlag || $("#" + node.tId + consts.id.REMOVE).length > 0) {
+			if (node.editNameFlag || $("#" + node.tId + consts.id.REMOVE).length > 0 || node.disableRemove) {
 				return;
 			}
 			if (!tools.apply(setting.edit.showRemoveBtn, [setting.treeId, node], setting.edit.showRemoveBtn)) {
