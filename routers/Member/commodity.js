@@ -16,12 +16,11 @@ router.use(bodyParser.urlencoded({
 }));
 router.get('/', function (req, res) {
     if (req.session._admin.rank != null) {
-        Render(res, req.session._admin)
+        Render(res, req.session._admin);
     } else {
         res.redirect('/member');
     }
 });
-
 router.post('/selectTypeView', function (req, res) {
     res.render("pages/Member/commodity/type");
 });
@@ -84,11 +83,11 @@ router.post('/getObjectTable', function (req, res) {
             });
         }, function (err) {
             console.error(err);
-            res.json("搜尋失敗")
+            res.json("搜尋失敗");
         });
     }, function (err) {
         console.error(err);
-        res.json("搜尋失敗")
+        res.json("搜尋失敗");
     });
 });
 router.post('/newObject', function (req, res) {

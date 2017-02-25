@@ -1,6 +1,6 @@
 # 賣水的網站
 * 系統
-	- DataBase: Mysql5.5
+	- DataBase: Mysql5.7
 	- ApplicationSystem: Nodejs v4.6.1
 	- NodeModule:
 		* body-parser: ^1.15.2,
@@ -14,6 +14,11 @@
     	* socket.io: ^1.7.2,
     	* moment-timezone: *
 * 已完成
+	- 2017/2/25
+		1.	新增新聞列表(前台顯示)
+		2.	新增新聞列表資料庫&HTML編輯存取
+		3.	新聞後台管理(尚未綁定會員系統)
+		4.	研究tinymce
 	- 2017/2/21
 		1.	新增商品類型根目錄
 		2.	修改ztree函式庫，可選擇節點是否可編輯或刪除

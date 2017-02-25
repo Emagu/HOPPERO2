@@ -24,6 +24,8 @@ function getRouter(url) {
 const Router = {
     message: getRouter("message"),
     mail: getRouter("mail"),
+    newsControl: getRouter('Member/news'),
+    // ↑測試
     front: getRouter("front"),
 	member: getRouter("member"),
     verify: getRouter("verify")
@@ -33,6 +35,8 @@ app.get('/', function (req, res) {
     res.redirect('/front');//後端控制前端跳轉路由
 });
 app.use('/mail', Router.mail);
+app.use('/newcontrol', Router.newsControl);
+// ↑測試
 app.use('/verify', Router.verify);
 app.use('/front', Router.front);
 app.use('/member', Router.member);

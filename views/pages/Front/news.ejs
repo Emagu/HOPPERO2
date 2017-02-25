@@ -1,0 +1,31 @@
+<h3>News-<span>最新消息</span></h3>
+    <hr class="hr0" />
+    <a onclick="getNewsList(1)">公告</a>    <a onclick="getNewsList(2)">商品</a>    <a onclick="getNewsList(3 )">活動</a>
+    <hr class="hr0" />
+    <section class="news_list">
+        <ul class="word_size" id="news_list_body"></ul>
+    </section>
+<script>
+    function getNewsList(type){
+        var newsBody = $("#news_list_body");
+        $.post('./news/getNewsList',{
+            Type: type
+        },function(listData){
+            listData.forEach(function(news,index){
+                var newsLi = jQuery('<li/>', {
+                    class: (index%2 == 0) ? "bg_grey" : ""
+                });
+                var newsA = jQuery('<a/>', {
+                    href:"./news?NO="+news.NO,
+                    text: news.Title
+                });
+                jQuery('<strong/>', {
+                    text: news.Date
+                }).appendTo(newsA);
+                newsLi.append(newsA);
+                newsLi.appendTo($("#news_list_body").empty());
+            });
+        });
+    }
+    getNewsList(1);
+</script>
