@@ -9,9 +9,10 @@
 <script>
     function getNewsList(type){
         var newsBody = $("#news_list_body");
-        $.post('front/news/getNewsList',{
+        $.post('newcontrol/getNewsList',{
             Type: type
         },function(listData){
+            $("#news_list_body").empty();
             listData.forEach(function(news,index){
                 var newsLi = jQuery('<li/>', {
                     class: (index%2 == 0) ? "bg_grey" : ""
@@ -35,7 +36,7 @@
                     onclick: "remove('"+news.NO+"')"
                 }).appendTo(newsA);
                 newsLi.append(newsA);
-                newsLi.appendTo($("#news_list_body").empty());
+                newsLi.appendTo($("#news_list_body"));
             });
         });
     }

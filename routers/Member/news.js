@@ -1,12 +1,14 @@
 'use strict';
 const express = require('express');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 const fs = require('fs');
 const Tool = require('../../lib/tool');
 const SQL = require('../../lib/MySQL_X');
 let router = express.Router();
 let nowDate = null;//今天日期 格式YYYYMMDD
 let todayCreate = 0;//今天創建數量 格式XXXX
+router.use(fileUpload());
 router.use(bodyParser.json());       // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({
      // to support URL-encoded bodies
@@ -14,6 +16,16 @@ router.use(bodyParser.urlencoded({
 }));
 router.get('/', function (req, res) {
 	Render(res);
+});
+router.post('/getNewsList',function(req,res){
+    let db = new SQL.DB();
+    db.select("N01","DECRYPT","Title");
+    db.select("N00","DEFAULT","NO");
+    db.select("N000","DEFAULT","Date");
+    db.where("NT00",req.body.Type);
+    db.get("News").then(function(resData){
+        res.json(resData);
+    });
 });
 router.post('/editSumit', function(req, res) {
     //寫HTML檔
@@ -57,6 +69,32 @@ router.post('/editSumit', function(req, res) {
             
         } 
     });
+});
+router.post('/uploadNewsImage',function(req, res) {
+    if (!req.files) res.send('fail');
+    else {
+        let imagesFile = req.files.file;
+        let imagesDir = "./public/images/news";
+        try {
+            fs.mkdirSync(imagesDir);
+        } catch (e) {
+            if (e.code != 'EEXIST') {
+                console.error(e);
+                res.send("fail");
+            }
+        }
+        try {
+            imagesFile.mv(imagesDir + '/' + imagesFile.name, function (err) {
+                if (err) {
+                    console.error(err);
+                    res.send('fail');
+                } else res.json({location:imagesDir+'/' + imagesFile.name});
+            });
+        } catch (e) {
+            console.error(e);
+            res.send('fail');
+        }
+    }
 });
 router.post('/changeView', function (req,res) {
    switch (req.body.Type) {

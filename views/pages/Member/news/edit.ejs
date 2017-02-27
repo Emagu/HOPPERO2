@@ -23,6 +23,23 @@
                 'searchreplace visualblocks code fullscreen',
                 'insertdatetime media table contextmenu paste code'
             ],
+            automatic_uploads: true,
+            images_upload_url: '/newcontrol/uploadNewsImage',
+            file_picker_types: 'image', 
+            file_picker_callback: function(cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+                input.onchange = function() {
+                    var file = this.files[0];
+                    var id = 'blobid' + (new Date()).getTime();
+                    var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                    var blobInfo = blobCache.create(id, file);
+                    blobCache.add(blobInfo);
+                    cb(blobInfo.blobUri(), { title: file.name });
+                };
+                input.click();
+            },
             resize: false,
             language: 'zh_TW',
             toolbar: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',

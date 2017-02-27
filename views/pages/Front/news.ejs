@@ -17,7 +17,7 @@
     <%  } %>
     <%  if(value.list!=null){ %>
             $(".news_list").css("display","block");
-            <%= value.list.length%>
+            $("#news_list_body").empty();
             <% value.list.forEach(function(news,index){ %>
                 var newsLi = jQuery('<li/>', {
                     class: (<%= index%2 %> == 0) ? "bg_grey" : ""
@@ -27,10 +27,10 @@
                     text: '<%= news.Title%>'
                 });
                 jQuery('<strong/>', {
-                    text: moment('<%= news.Date%>').format("YYYY/MM/DD")
+                    text: '<%= news.Date%>'
                 }).appendTo(newsA);
                 newsLi.append(newsA);
-                newsLi.appendTo($("#news_list_body").empty());
+                newsLi.appendTo($("#news_list_body"));
             <% }); %>
     <%  } %>
 </script>

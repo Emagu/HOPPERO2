@@ -256,6 +256,9 @@ router.post("/setPassword", function(req, res){
 		res.send("error");
 	}
 });
+router.get('*',function(req,res){
+   res.redirect(req.url);
+});
 function getRouter(url) {
     let router = require('./Front/' + url);
     return router;

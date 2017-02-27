@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const AccountLib = require("../../lib/Account");
 const SQL = require("../../lib/MySQL_X");
+const moment = require("moment-timezone");
 let router = express.Router();
 router.use(bodyParser.json());       // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({
@@ -82,15 +83,24 @@ router.get('/', function (req, res) {
 	    }
 	});
 });
+
 //method
 function getNewsList(res,login,type){
     let db = new SQL.DB();
     db.select("N01","DECRYPT","Title");
-    db.select("N00","DEFAULT","NO");
-    db.select("N000","DEFAULT","Date");
+    db.select("N00");
+    db.select("N000");
     db.where("NT00",type);
     db.get("News").then(function(resData){
-        listRender(res,login,resData);
+        let data = [];
+        resData.forEach(function(row){
+            data.push({
+                Title:row.Title,
+                NO:row.N00,
+                Date:moment(row.N000).format("YYYY/MM/DD")
+            });
+        });
+        listRender(res,login,data);
     });
 }
 function detailRender(res,login,news) {
