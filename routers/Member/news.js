@@ -1,8 +1,12 @@
 'use strict';
 const express = require('express');
 const bodyParser = require('body-parser');
-const AccountLib = require("../../lib/Account");
+const fs = require('fs');
+const Tool = require('../../lib/tool');
+const SQL = require('../../lib/MySQL_X');
 let router = express.Router();
+let nowDate = null;//今天日期 格式YYYYMMDD
+let todayCreate = 0;//今天創建數量 格式XXXX
 router.use(bodyParser.json());       // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({
      // to support URL-encoded bodies
@@ -11,13 +15,60 @@ router.use(bodyParser.urlencoded({
 router.get('/', function (req, res) {
 	Render(res);
 });
-router.post('/changeView',function (req,res) {
+router.post('/editSumit', function(req, res) {
+    //寫HTML檔
+    if(nowDate!=Tool.getTimeZone(null,"YYYYMMDD")){
+        nowDate = Tool.getTimeZone(null,"YYYYMMDD");
+        todayCreate = 0;
+    }
+    let filename = nowDate + Tool.String.IntFormat(todayCreate,4,"0");
+    fs.writeFile('./html/news/'+filename+'.txt', req.body.html, function (err) {
+        if (err) {
+            console.error(err); 
+            res.send("fail");
+        }else{
+            //寫資料
+            let db = new SQL.DB();
+            if(req.body.Type == "ADD"){
+                db.insert([{
+                    key: "NT00",
+                    value: req.body.newsType
+                },{
+                    key: "N01",
+                    value: req.body.newsTitle,
+                    action: "ENCRYPT"
+                },{
+                    key: "N02",
+                    value: filename
+                },{
+                    key: "N000",
+                    value: Tool.getTimeZone()
+                }],"News").then(function(){
+                    res.send("success");
+                },function(err){
+                    console.error(err); 
+                    res.send("fail");
+                });
+            }else if(req.body.Type == "EDIT"){
+                res.send("success");
+            }else{
+                res.send("fail");
+            }
+            
+        } 
+    });
+});
+router.post('/changeView', function (req,res) {
    switch (req.body.Type) {
-        case 'add':
-           addRender(res);
+        case 'list':
+           listRender(res);
            break;
         case 'edit':
-           // code
+            if(req.body.NewsNo!=null){//修改
+                
+            }else{//新增
+                editRender(res,"","ADD");
+            }
            break;
         case 'reView':
            // code
@@ -34,10 +85,11 @@ function Render(res) {
         Value: require("../../config/company"),
         UserData: userData,
         CSSs: [
-            "../../public/css/front.css",
-            "../../public/css/floatDiv.css"
+            "../../public/css/front.css"
         ],
         JavaScripts: [
+            "../../public/js/tinymce/tinymce.min.js",
+            "../../public/js/moment.js"
         ],
         Include: [
             { url: "../pages/Member/news/main", value: {} }
@@ -47,9 +99,15 @@ function Render(res) {
         ]
     });
 }
-function addRender(res) {
-    res.render("../pages/member/news/add", {
+function listRender(res) {
+    res.render("./pages/Member/news/list", {
         value: {}
+    });
+}
+function editRender(res,html,type) {
+    res.render("./pages/Member/news/edit", {
+        html: html,
+        type: type
     });
 }
 module.exports = router;

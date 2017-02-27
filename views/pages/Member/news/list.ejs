@@ -1,0 +1,46 @@
+<h3>News-<span>最新消息</span></h3>
+<hr class="hr0" />
+<a onclick="getNewsList(1)">公告</a>    <a onclick="getNewsList(2)">商品</a>    <a onclick="getNewsList(3 )">活動</a><br>
+<button onclick="editView()">新增</button>
+<hr class="hr0" />
+<section class="news_list">
+    <ul class="word_size" id="news_list_body"></ul>
+</section>
+<script>
+    function getNewsList(type){
+        var newsBody = $("#news_list_body");
+        $.post('front/news/getNewsList',{
+            Type: type
+        },function(listData){
+            listData.forEach(function(news,index){
+                var newsLi = jQuery('<li/>', {
+                    class: (index%2 == 0) ? "bg_grey" : ""
+                });
+                var newsA = jQuery('<a/>', {
+                    text: news.Title
+                });
+                jQuery('<strong/>', {
+                    text: moment(news.Date).format("YYYY/MM/DD")
+                }).appendTo(newsA);
+                jQuery('<button/>', {
+                    text: "前往網址",
+                    onclick: "location.href='/front/news?NO="+news.NO+"'"
+                }).appendTo(newsA);
+                jQuery('<button/>', {
+                    text: "編輯",
+                    onclick: "editView('"+news.NO+"')"
+                }).appendTo(newsA);
+                jQuery('<button/>', {
+                    text: "刪除",
+                    onclick: "remove('"+news.NO+"')"
+                }).appendTo(newsA);
+                newsLi.append(newsA);
+                newsLi.appendTo($("#news_list_body").empty());
+            });
+        });
+    }
+    function remove(no){
+        console.log(no);
+    }
+    getNewsList(1);
+</script>

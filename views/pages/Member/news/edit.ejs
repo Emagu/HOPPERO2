@@ -1,0 +1,43 @@
+<button onclick="outHtml()">輸出</button></br>
+標題:<input type="text" id="news_title" /></br>
+類型:<select id="news_type">
+    <option value="1">公告</option>
+    <option value="2">新聞</option>
+    <option value="3">活動</option>
+</select></br>
+<textarea id="editer_area">
+  
+</textarea>
+<script>
+    $(document).ready(function(){
+        $("#editer_area").html("<%= html%>");
+        editerInit();
+    });
+    function editerInit(){
+        tinymce.init({
+            selector: 'textarea',
+            height: 500,
+            menubar: false,
+            plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table contextmenu paste code'
+            ],
+            resize: false,
+            language: 'zh_TW',
+            toolbar: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            content_css: '//www.tinymce.com/css/codepen.min.css'
+        });
+    }
+    
+    function outHtml(){
+        $.post('/newcontrol/editSumit',{
+            newsTitle: $("#news_title").val(),
+            newsType: $("#news_type option:selected").val(),
+            html: encodeURIComponent(tinymce.activeEditor.getContent()),
+            Type: '<%= type%>'
+        },function(status){
+            console.log(status);
+        });
+    }
+</script>

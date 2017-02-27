@@ -1,82 +1,19 @@
-<div class="float_box" id="add_news_views">
-    <div class="float_box_top"></div>
-        <form id="form_add_news" method='post' action='newcontrol/addNews'>
-            <div class="float_box_text1">
-                新聞標題:
-                <input class="float_box_input" type="text" name="o_commodity_code" onkeyup="value=value.replace(/[^\d]/g,'')" />
-            </div>
-            <div class="float_box_text3">
-                新聞分類：<a id="add_news_type"></a>
-            </div>
-            <div class="float_box_text3">
-                新聞內容：
-                <textarea class="float_box_input" name="o_commodity_detailDescription" placeholder="輸入詳細的產品介紹" style="height:200px;resize: none;overflow-y: scroll;"></textarea>
-            </div>
-                商品照片：
-                <input type="file" name="o_commodity_images" />
-            <div class="all_button">
-                <button type="submit" class="button_red">確認送出</button>
-            </div>
-        </form>
-    <div class="float_box_bottom"></div>
-</div>
-<div class="float_box_bg" onclick="hideFloatBox()"></div>
-<h3>News-<span>最新消息</span></h3>
-    <hr class="hr0" />
-    <a onclick="getNewsList(1)">公告</a>    <a onclick="getNewsList(2)">商品</a>    <a onclick="getNewsList(3 )">活動</a><br>
-    <button onclick="addNews()">新增</button>
-    <hr class="hr0" />
-    
-    <section class="news_list">
-        <ul class="word_size" id="news_list_body"></ul>
-    </section>
+<div id="wrap_right_body"></div>
 <script>
-    function getNewsList(type){
-        var newsBody = $("#news_list_body");
-        $.post('front/news/getNewsList',{
-            Type: type
-        },function(listData){
-            listData.forEach(function(news,index){
-                var newsLi = jQuery('<li/>', {
-                    class: (index%2 == 0) ? "bg_grey" : ""
-                });
-                var newsA = jQuery('<a/>', {
-                    text: news.Title
-                });
-                jQuery('<strong/>', {
-                    text: news.Date
-                }).appendTo(newsA);
-                jQuery('<button/>', {
-                    text: "前往網址",
-                    onclick: "location.href='/front/news?NO="+news.NO+"'"
-                }).appendTo(newsA);
-                jQuery('<button/>', {
-                    text: "編輯",
-                    onclick: "edit('"+news.NO+"')"
-                }).appendTo(newsA);
-                jQuery('<button/>', {
-                    text: "刪除",
-                    onclick: "remove('"+news.NO+"')"
-                }).appendTo(newsA);
-                newsLi.append(newsA);
-                newsLi.appendTo($("#news_list_body").empty());
-            });
-        });
+    function listView(){
+        $.post('/newcontrol/changeView',{
+            Type: 'list'
+        },function(html){
+            $("#wrap_right_body").html(html);
+        },'html');
     }
-    function edit(no){
-        console.log(no);
+    function editView(newsNo){
+        $.post('/newcontrol/changeView',{
+            Type: 'edit',
+            NewsNo: newsNo
+        },function(html){
+            $("#wrap_right_body").html(html);
+        },'html');
     }
-    function remove(no){
-        console.log(no);
-    }
-    function addNews(){
-        
-        console.log('add');
-    }
-    function hiddenFloatBox(){
-        $(".float_box_bg").removeClass("change_float_box_opacity");
-    	$("#float_box_login").removeClass("change_float_box_true");
-    	$("#float_box_login").css({"left":"150%"});
-    }
-    getNewsList(1);
+    listView();
 </script>

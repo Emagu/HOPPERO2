@@ -11,10 +11,10 @@
 <link rel="stylesheet" href="../public/css/toastr.min.css">
 <link rel="stylesheet" href="../public/css/floatDiv.css">
 	<% CSSs.forEach(function(CSS){ %>
-<link rel="stylesheet" href= <%= CSS.url%>>
+<link rel="stylesheet" href= <%= CSS%>>
 	<%});%>
 	<% JavaScripts.forEach(function(JavaScript){ %>
-<script src=<%= JavaScript.url%>></script>
+<script src=<%= JavaScript%>></script>
 	<%});%>
 <body>
 	<div class="float_box" id="float_box_login">
