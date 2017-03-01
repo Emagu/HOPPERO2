@@ -7,6 +7,12 @@ body{
 	position:relative;
 	background:white;
 }
+#wrap_top_hide{
+	width:100%;
+	min-height:70px;
+	background-color:white;
+	display:none;
+}
 #wrap_top{
 	position:relative;
 	width:100%;
@@ -107,7 +113,7 @@ body{
 	width:20%;
 	top:20%;
 	height:90%;
-	position:relative;
+	position:absolute;
 }
 #wrap_left ul li{
 	padding: 8px 20px;

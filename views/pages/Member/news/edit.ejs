@@ -1,13 +1,11 @@
-<button onclick="outHtml()">輸出</button></br>
-標題:<input type="text" id="news_title" /></br>
+<button onclick="outHtml()">輸出</button><br/>
+標題:<input type="text" id="news_title" /><br/>
 類型:<select id="news_type">
     <option value="1">公告</option>
     <option value="2">新聞</option>
     <option value="3">活動</option>
-</select></br>
-<textarea id="editer_area">
-  
-</textarea>
+</select><br/>
+<textarea id="editer_area"></textarea>
 <script>
     $(document).ready(function(){
         $("#editer_area").html("<%= html%>");
@@ -24,7 +22,7 @@
                 'insertdatetime media table contextmenu paste code'
             ],
             automatic_uploads: true,
-            images_upload_url: '/newcontrol/uploadNewsImage',
+            images_upload_url: '/member/news/uploadNewsImage',
             file_picker_types: 'image', 
             file_picker_callback: function(cb, value, meta) {
                 var input = document.createElement('input');
@@ -48,7 +46,7 @@
     }
     
     function outHtml(){
-        $.post('/newcontrol/editSumit',{
+        $.post('/member/news/editSumit', {
             newsTitle: $("#news_title").val(),
             newsType: $("#news_type option:selected").val(),
             html: encodeURIComponent(tinymce.activeEditor.getContent()),

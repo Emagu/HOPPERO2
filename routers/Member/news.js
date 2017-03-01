@@ -1,14 +1,14 @@
 'use strict';
 const express = require('express');
 const bodyParser = require('body-parser');
-const fileUpload = require('express-fileupload');
-const fs = require('fs');
+const busboy = require('connect-busboy');
+const fs = require('fs-extra');
 const Tool = require('../../lib/tool');
 const SQL = require('../../lib/MySQL_X');
 let router = express.Router();
 let nowDate = null;//今天日期 格式YYYYMMDD
 let todayCreate = 0;//今天創建數量 格式XXXX
-router.use(fileUpload());
+router.use(busboy());
 router.use(bodyParser.json());       // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({
      // to support URL-encoded bodies
@@ -55,7 +55,10 @@ router.post('/editSumit', function(req, res) {
                 },{
                     key: "N000",
                     value: Tool.getTimeZone()
-                }],"News").then(function(){
+                }],"News", {
+                    userNO: req.session._admin.userNO,//系統
+                    IP: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+                }, 12).then(function(){
                     res.send("success");
                 },function(err){
                     console.error(err); 
@@ -71,10 +74,23 @@ router.post('/editSumit', function(req, res) {
     });
 });
 router.post('/uploadNewsImage',function(req, res) {
-    if (!req.files) res.send('fail');
+    let fstream;
+    req.pipe(req.busboy);
+    req.busboy.on('file', function (fieldname, file, filename) {
+        console.log("Uploading: " + filename);    
+        //Path where image will be uploaded
+        fstream = fs.createWriteStream(__dirname + '/../../public/images/news/' + filename);
+        file.pipe(fstream);
+        fstream.on('close', function () {
+            console.log("Upload Finished of " + filename);
+            res.json({ location: '/public/images/news/' + filename});
+        });
+    });
+    /*if (!req.files) res.send('fail');
     else {
         let imagesFile = req.files.file;
-        let imagesDir = "./public/images/news";
+        console.log(req.body.)
+        let imagesDir = "/public/images/news";
         try {
             fs.mkdirSync(imagesDir);
         } catch (e) {
@@ -88,13 +104,13 @@ router.post('/uploadNewsImage',function(req, res) {
                 if (err) {
                     console.error(err);
                     res.send('fail');
-                } else res.json({location:imagesDir+'/' + imagesFile.name});
+                } else res.json({location: imagesDir+'/' + imagesFile.name});
             });
         } catch (e) {
             console.error(e);
             res.send('fail');
         }
-    }
+    }*/
 });
 router.post('/changeView', function (req,res) {
    switch (req.body.Type) {

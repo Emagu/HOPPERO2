@@ -9,7 +9,7 @@
 <script>
     function getNewsList(type){
         var newsBody = $("#news_list_body");
-        $.post('newcontrol/getNewsList',{
+        $.post('/member/news/getNewsList', {
             Type: type
         },function(listData){
             $("#news_list_body").empty();

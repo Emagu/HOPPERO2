@@ -26,13 +26,15 @@ router.use(function(req, res, next) {//權限認證
 });
 const Router = {
     index: getRouter("index"),
-	commodity: getRouter("commodity")//商品管理
+    commodity: getRouter("commodity"),//商品管理
+    news: getRouter("news"),//商品管理
 };
 router.get('/', function (req, res) {
     res.redirect('/member/index');
 });
 router.use('/index', Router.index);
 router.use('/commodity', Router.commodity);
+router.use('/news', Router.news);
 function getRouter(url) {
     let router = require('./Member/' + url);
     return router;

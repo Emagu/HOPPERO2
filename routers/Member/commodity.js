@@ -6,7 +6,7 @@ const fs = require("fs");
 const AccountLib = require("../../lib/Account");
 const Sql = require("../../lib/MySQL_X");
 const Tool = require("../../lib/tool");
-const CommodityConfig = require("../../config/Commodity");
+const CompanyConfig = require("../../config/company");
 let router = express.Router();
 router.use(fileUpload());
 router.use(bodyParser.json());       // to support JSON-encoded bodies
@@ -208,7 +208,7 @@ router.post('/newObject', function (req, res) {
         if (!req.files) res.send('success');
         else {
             let imagesFile = req.files.o_commodity_images;
-            let imagesDir = CommodityConfig.imagesUrl + "/" + req.body.o_commodity_code;
+            let imagesDir = CompanyConfig.imagesUrl + "/commodity/" + req.body.o_commodity_code;
             try {
                 fs.mkdirSync(imagesDir);
             } catch (e) {
