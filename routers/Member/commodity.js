@@ -1,14 +1,12 @@
 'use strict';
 const express = require('express');
 const bodyParser = require('body-parser');
-const fileUpload = require('express-fileupload');
-const fs = require("fs");
+const fs = require("fs-extra");
 const AccountLib = require("../../lib/Account");
 const Sql = require("../../lib/MySQL_X");
 const Tool = require("../../lib/tool");
 const CompanyConfig = require("../../config/company");
 let router = express.Router();
-router.use(fileUpload());
 router.use(bodyParser.json());       // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({
     // to support URL-encoded bodies
@@ -45,8 +43,6 @@ router.post('/selectObjectView', function (req, res) {
     });
 });
 router.post('/getObjectTable', function (req, res) {
-    console.log(req.body);
-    
     let DB = new Sql.DB();
     let pageLimit = parseInt(req.body.pageLimit);//單頁數量
     let pages = parseInt(req.body.pages);//所選頁數
@@ -90,7 +86,7 @@ router.post('/getObjectTable', function (req, res) {
         res.json("搜尋失敗");
     });
 });
-router.post('/newObject', function (req, res) {
+/*router.post('/newObject', function (req, res) {
     //資料處理
     let newObjectData = [];
     if (req.body.o_commodity_code != null) {
@@ -246,7 +242,7 @@ router.post('/newObject', function (req, res) {
         console.error(err);
         res.send("新增產品項失敗");
     });
-});
+});*/
 router.get('/selectInputView', function (req, res) {
     
 });

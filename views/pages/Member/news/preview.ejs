@@ -1,0 +1,22 @@
+﻿<div>
+    <h3>News-<span>最新消息</span></h3>
+    <hr class="hr0" />
+    <a>公告</a>    <a>商品</a>    <a>活動</a>
+    <hr class="hr0" />
+    <div id="news_detail_body"></div>
+    <button onclick="">編輯</button>
+    <button onclick="editSumit()">確認</button>
+    <script>
+        $("#news_detail_body").html(decodeURIComponent('<%= value.html%>'));
+        function editSumit() {
+            $.post('/member/news/editSumit', {
+                newsTitle: "<%= value.title%>",
+                newsType: "<%= value.type%>",
+                html: "<%= value.html%>",
+                action: '<%= value.action%>'
+            }, function (status) {
+                if (status == "success") location.href = "./";
+            });
+        }
+    </script>
+</div>

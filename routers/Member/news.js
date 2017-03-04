@@ -15,7 +15,25 @@ router.use(bodyParser.urlencoded({
     extended: true
 }));
 router.get('/', function (req, res) {
-	Render(res);
+    res.redirect('/member/news/list');
+});
+router.get('/list', function (req, res) {
+    listRender(res, req.session._admin);
+});
+router.get('/edit', function (req, res) {
+    editRender(res, req.session._admin, {
+        html: req.query.html,
+        title: req.query.title,
+        action: req.query.action
+    });
+});
+router.get('/preview', function (req, res) { 
+    previewRender(res, {
+        html: req.query.html,
+        title: req.query.title,
+        type: req.query.type,
+        action: req.query.action
+    });
 });
 router.post('/getNewsList',function(req,res){
     let db = new SQL.DB();
@@ -33,6 +51,7 @@ router.post('/editSumit', function(req, res) {
         nowDate = Tool.getTimeZone(null,"YYYYMMDD");
         todayCreate = 0;
     }
+    todayCreate++;
     let filename = nowDate + Tool.String.IntFormat(todayCreate,4,"0");
     fs.writeFile('./html/news/'+filename+'.txt', req.body.html, function (err) {
         if (err) {
@@ -41,7 +60,7 @@ router.post('/editSumit', function(req, res) {
         }else{
             //寫資料
             let db = new SQL.DB();
-            if(req.body.Type == "ADD"){
+            if(req.body.action == "add"){
                 db.insert([{
                     key: "NT00",
                     value: req.body.newsType
@@ -64,7 +83,7 @@ router.post('/editSumit', function(req, res) {
                     console.error(err); 
                     res.send("fail");
                 });
-            }else if(req.body.Type == "EDIT"){
+            }else if(req.body.action == "edit"){
                 res.send("success");
             }else{
                 res.send("fail");
@@ -86,31 +105,6 @@ router.post('/uploadNewsImage',function(req, res) {
             res.json({ location: '/public/images/news/' + filename});
         });
     });
-    /*if (!req.files) res.send('fail');
-    else {
-        let imagesFile = req.files.file;
-        console.log(req.body.)
-        let imagesDir = "/public/images/news";
-        try {
-            fs.mkdirSync(imagesDir);
-        } catch (e) {
-            if (e.code != 'EEXIST') {
-                console.error(e);
-                res.send("fail");
-            }
-        }
-        try {
-            imagesFile.mv(imagesDir + '/' + imagesFile.name, function (err) {
-                if (err) {
-                    console.error(err);
-                    res.send('fail');
-                } else res.json({location: imagesDir+'/' + imagesFile.name});
-            });
-        } catch (e) {
-            console.error(e);
-            res.send('fail');
-        }
-    }*/
 });
 router.post('/changeView', function (req,res) {
    switch (req.body.Type) {
@@ -130,38 +124,62 @@ router.post('/changeView', function (req,res) {
    } 
 });
 //method
-function Render(res) {
-    let userData = {
-        rank:2
-    };
+function listRender(res,userData) {
     res.render('layouts/member_layout', {
         Title: "新聞列表",
         Value: require("../../config/company"),
         UserData: userData,
         CSSs: [
-            "../../public/css/front.css"
+            "/public/css/front.css"
         ],
         JavaScripts: [
-            "../../public/js/tinymce/tinymce.min.js",
-            "../../public/js/moment.js"
+            "/public/js/moment.js"
         ],
         Include: [
-            { url: "../pages/Member/news/main", value: {} }
+            { url: "../pages/Member/news/list", value: {} }
         ],
         Script: [	
             
         ]
     });
 }
-function listRender(res) {
-    res.render("./pages/Member/news/list", {
-        value: {}
+function editRender(res,userData, editData) {
+    res.render('layouts/member_layout', {
+        Title: "新聞列表",
+        Value: require("../../config/company"),
+        UserData: userData,
+        CSSs: [
+            "/public/css/front.css"
+        ],
+        JavaScripts: [
+            "/public/js/tinymce/tinymce.min.js",
+        ],
+        Include: [
+            { url: "../pages/Member/news/edit", value: editData }
+        ],
+        Script: [	
+            
+        ]
     });
 }
-function editRender(res,html,type) {
-    res.render("./pages/Member/news/edit", {
-        html: html,
-        type: type
+function previewRender(res, news) {
+    res.render('layouts/front_layout', {
+        Title: "新聞列表-" + news.title,
+        Value: require("../../config/company"),
+        Login: false,
+        CSSs: [
+        ],
+        JavaScripts: [
+            "../../public/js/moment.js"
+        ],
+        Include: [
+            {
+                url: "../pages/Member/news/preview", value: news
+            }
+        ],
+        Script: [	
+        ]
     });
 }
+
 module.exports = router;

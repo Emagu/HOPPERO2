@@ -67,16 +67,16 @@ router.post("/login", function (req, res) {
                 userNO: resultData[0].userNO,
                 IP: req.headers['x-forwarded-for'] || req.connection.remoteAddress
             },1).then(function(){
-                console.log("success");
+				req.session._admin = {
+					userNO: resultData[0].userNO,
+					userID: resultData[0].userID
+				};
+				req.session.save();
+				res.send("success");
             },function(err){
                 console.error(err);
             });
-            req.session._admin = {
-                userNO: resultData[0].userNO,
-                userID: resultData[0].userID
-            };
-            req.session.save();
-            res.send("success");
+            
         }
     });
 });

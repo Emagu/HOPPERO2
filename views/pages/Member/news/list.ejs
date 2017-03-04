@@ -1,7 +1,7 @@
 <h3>News-<span>最新消息</span></h3>
 <hr class="hr0" />
-<a onclick="getNewsList(1)">公告</a>    <a onclick="getNewsList(2)">商品</a>    <a onclick="getNewsList(3 )">活動</a><br>
-<button onclick="editView()">新增</button>
+<a onclick="getNewsList(1)" style="cursor:pointer">公告</a>    <a onclick="getNewsList(2)" style="cursor:pointer">商品</a>    <a onclick="getNewsList(3)" style="cursor:pointer">活動</a><br>
+<a href="./edit?action=add">新增</a>
 <hr class="hr0" />
 <section class="news_list">
     <ul class="word_size" id="news_list_body"></ul>
@@ -36,7 +36,7 @@
                     onclick: "remove('"+news.NO+"')"
                 }).appendTo(newsA);
                 newsLi.append(newsA);
-                newsLi.appendTo($("#news_list_body"));
+                $("#news_list_body").prepend(newsLi);
             });
         });
     }

@@ -2,12 +2,12 @@
 <html>
 <head>
 	<title><%= Title%></title>
-	<link rel="stylesheet" href="../public/css/w3.css">
-	<link rel="stylesheet" href="../public/css/my_member.css">
-    <link rel="stylesheet" href="../public/css/toastr.min.css">
-    <script src="../public/js/jquery.js"></script>
-    <script src="../public/js/jquery.validate.js"></script>
-    <script src="../public/js/toastr.min.js"></script>
+	<link rel="stylesheet" href="/public/css/w3.css">
+	<link rel="stylesheet" href="/public/css/my_member.css">
+    <link rel="stylesheet" href="/public/css/toastr.min.css">
+    <script src="/public/js/jquery.js"></script>
+    <script src="/public/js/jquery.validate.js"></script>
+    <script src="/public/js/toastr.min.js"></script>
     <script>
         jQuery.browser={};(function(){jQuery.browser.msie=false; jQuery.browser.version=0;if(navigator.userAgent.match(/MSIE ([0-9]+)./)){ jQuery.browser.msie=true;jQuery.browser.version=RegExp.$1;}})();
     </script>
@@ -21,7 +21,7 @@
 <body>
 	<div id="wrap_top">
 			<div id="logopic">
-				<a href="/front"><img src="../public/images/logo.png"/></a>
+				<a href="/front"><img src="/public/images/logo.png"/></a>
 			</div>
 			<div class="wrap_top_hr"></div>
 			<p class="wrap_top_p">會員中心</p>
@@ -56,9 +56,8 @@
 		<div class="clear"></div>
 	</div>
 	<div id="wrap_footer">
-			
 	</div>
-	<script src="../public/js/member.js"></script>
+	<script src="/public/js/member.js"></script>
 </body>
 	<% Script.forEach(function(SObject){%>
 		<%- include(SObject.url,{value:SObject.value})%>

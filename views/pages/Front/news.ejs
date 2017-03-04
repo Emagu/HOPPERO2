@@ -30,7 +30,7 @@
                     text: '<%= news.Date%>'
                 }).appendTo(newsA);
                 newsLi.append(newsA);
-                newsLi.appendTo($("#news_list_body"));
+                $("#news_list_body").prepend(newsLi);
             <% }); %>
     <%  } %>
 </script>

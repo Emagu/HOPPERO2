@@ -76,7 +76,6 @@ router.post('/send',function (req, res) {//發出訊息
  * @status {array} 信件列表
  **/
 router.post('/getMailList',function (req, res) {
-    console.log(req.body.type);
     let DB = new Sql.DB();
     DB.select("MA00","DEFAULT","MailNO");
     DB.select("MA01","DECRYPT","MailTitle");

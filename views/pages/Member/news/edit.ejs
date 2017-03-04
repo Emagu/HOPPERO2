@@ -1,14 +1,17 @@
-<button onclick="outHtml()">輸出</button><br/>
-標題:<input type="text" id="news_title" /><br/>
+標題:<input type="text" id="news_title" value="<%= value.title%>"/><br/>
 類型:<select id="news_type">
     <option value="1">公告</option>
     <option value="2">新聞</option>
     <option value="3">活動</option>
 </select><br/>
 <textarea id="editer_area"></textarea>
+<button onclick="outHtml()">輸出</button><br />
+<button onclick="preview()">預覽</button><br />
 <script>
     $(document).ready(function(){
-        $("#editer_area").html("<%= html%>");
+        $("#editer_area").html("<%= value.html%>");
+        var type = '<%= value.type%>' == '' ? 1 : parseInt('<%= value.type%>');
+        $("#news_type").val(type).change();
         editerInit();
     });
     function editerInit(){
@@ -44,15 +47,13 @@
             content_css: '//www.tinymce.com/css/codepen.min.css'
         });
     }
-    
-    function outHtml(){
-        $.post('/member/news/editSumit', {
-            newsTitle: $("#news_title").val(),
-            newsType: $("#news_type option:selected").val(),
-            html: encodeURIComponent(tinymce.activeEditor.getContent()),
-            Type: '<%= type%>'
-        },function(status){
-            console.log(status);
-        });
+    function preview() {
+        var html = encodeURIComponent(encodeURIComponent(tinymce.activeEditor.getContent()));
+        console.log(html);
+        location.href = "./preview?title=" + $("#news_title").val()
+            + "&type=" + $("#news_type option:selected").val()
+            + "&html=" + html
+            + "&action=<%= value.action%>";
     }
+    
 </script>
